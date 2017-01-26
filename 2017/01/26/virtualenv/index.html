@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="python," />
 
 
 
@@ -84,15 +84,31 @@
 
 
 
-<meta name="description" content="积跬步以致千里">
-<meta property="og:type" content="website">
-<meta property="og:title" content="点 线 面">
-<meta property="og:url" content="http://www.zshu.me/index.html">
+<meta name="description" content="为什么要使用virtualenvvirtualenv 用于创建虚拟的独立python环境，不同的项目使用的第三方库所依赖的包的版本可能不一致，使用virtualenv可以隔离项目之间的第三方包依赖。
+安装virtualenv环境：ubuntu 16.04 LTS
+使用pip方式安装：
+sudo pip install virtualenv
+我的版本：virtualenv (15.1.0)
+使用vi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="virtualenv的使用">
+<meta property="og:url" content="http://www.zshu.me/2017/01/26/virtualenv/index.html">
 <meta property="og:site_name" content="点 线 面">
-<meta property="og:description" content="积跬步以致千里">
+<meta property="og:description" content="为什么要使用virtualenvvirtualenv 用于创建虚拟的独立python环境，不同的项目使用的第三方库所依赖的包的版本可能不一致，使用virtualenv可以隔离项目之间的第三方包依赖。
+安装virtualenv环境：ubuntu 16.04 LTS
+使用pip方式安装：
+sudo pip install virtualenv
+我的版本：virtualenv (15.1.0)
+使用vi">
+<meta property="og:updated_time" content="2017-01-26T07:04:02.859Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="点 线 面">
-<meta name="twitter:description" content="积跬步以致千里">
+<meta name="twitter:title" content="virtualenv的使用">
+<meta name="twitter:description" content="为什么要使用virtualenvvirtualenv 用于创建虚拟的独立python环境，不同的项目使用的第三方库所依赖的包的版本可能不一致，使用virtualenv可以隔离项目之间的第三方包依赖。
+安装virtualenv环境：ubuntu 16.04 LTS
+使用pip方式安装：
+sudo pip install virtualenv
+我的版本：virtualenv (15.1.0)
+使用vi">
 
 
 
@@ -120,13 +136,13 @@
 
 
 
-  <link rel="canonical" href="http://www.zshu.me/"/>
+  <link rel="canonical" href="http://www.zshu.me/2017/01/26/virtualenv/"/>
 
 
 
 
 
-  <title> 点 线 面 </title>
+  <title> virtualenv的使用 | 点 线 面 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -147,9 +163,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left 
-   page-home 
- ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -230,157 +244,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://www.zshu.me/2017/01/26/scrapy1-md/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="ZhangShu">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/avatar.gif">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="点 线 面">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="点 线 面" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/01/26/scrapy1-md/" itemprop="url">
-                  scrapy学习(一) ：环境配置
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-26T15:41:28+08:00">
-                2017-01-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>scrapy框架需要在Python 2.7，lxml，OpenSSL的基础之上创建。</p>
-<p>系统：ubuntu 16.04 LTS</p>
-<h1 id="安装缺失的依赖包"><a href="#安装缺失的依赖包" class="headerlink" title="安装缺失的依赖包"></a>安装缺失的依赖包</h1><p>ubuntu16.04中直接安装scrapy会报错，需要先手动安装一些缺失的依赖包</p>
-<pre><code>$ sudo apt-get install libxml2-dev libxslt1-dev python-dev libssl-dev libffi-dev  build-essential
-</code></pre><h1 id="安装lxml库"><a href="#安装lxml库" class="headerlink" title="安装lxml库"></a>安装lxml库</h1><pre><code>$ pip install lxml
-</code></pre><h1 id="安装openssl库"><a href="#安装openssl库" class="headerlink" title="安装openssl库"></a>安装openssl库</h1><p>无须安装，ubuntu16.04中默认配置中有openssl，安装scrapy时会自动安装依赖。</p>
-<h1 id="安装scrapy"><a href="#安装scrapy" class="headerlink" title="安装scrapy"></a>安装scrapy</h1><pre><code>$ pip install scrapy
-</code></pre><h1 id="安装完成，检查"><a href="#安装完成，检查" class="headerlink" title="安装完成，检查"></a>安装完成，检查</h1><p>在命令行中输入scrapy，显示如下界面，表示安装成功。</p>
-<pre><code>(env0) zs@ubuntu:~/workspace/env0$ scrapy
-Scrapy 1.3.0 - no active project
-
-Usage:
-  scrapy &lt;command&gt; [options] [args]
-
-Available commands:
-  bench         Run quick benchmark test
-  commands      
-  fetch         Fetch a URL using the Scrapy downloader
-  genspider     Generate new spider using pre-defined templates
-  runspider     Run a self-contained spider (without creating a project)
-  settings      Get settings values
-  shell         Interactive scraping console
-  startproject  Create new project
-  version       Print Scrapy version
-  view          Open URL in browser, as seen by Scrapy
-
-  [ more ]      More commands available when run from project directory
-
-Use &quot;scrapy &lt;command&gt; -h&quot; to see more info about a command
-(env0) zs@ubuntu:~/workspace/env0$ 
-</code></pre>
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
 
   
 
@@ -413,10 +279,7 @@ Use &quot;scrapy &lt;command&gt; -h&quot; to see more info about a command
             
             
               
-                
-                <a class="post-title-link" href="/2017/01/26/virtualenv/" itemprop="url">
-                  virtualenv的使用
-                </a>
+                virtualenv的使用
               
             
           </h1>
@@ -467,9 +330,7 @@ Use &quot;scrapy &lt;command&gt; -h&quot; to see more info about a command
       
 
       
-        
-          
-            <h1 id="为什么要使用virtualenv"><a href="#为什么要使用virtualenv" class="headerlink" title="为什么要使用virtualenv"></a>为什么要使用virtualenv</h1><p>virtualenv 用于创建虚拟的独立python环境，不同的项目使用的第三方库所依赖的包的版本可能不一致，使用virtualenv可以隔离项目之间的第三方包依赖。</p>
+        <h1 id="为什么要使用virtualenv"><a href="#为什么要使用virtualenv" class="headerlink" title="为什么要使用virtualenv"></a>为什么要使用virtualenv</h1><p>virtualenv 用于创建虚拟的独立python环境，不同的项目使用的第三方库所依赖的包的版本可能不一致，使用virtualenv可以隔离项目之间的第三方包依赖。</p>
 <h1 id="安装virtualenv"><a href="#安装virtualenv" class="headerlink" title="安装virtualenv"></a>安装virtualenv</h1><p>环境：ubuntu 16.04 LTS</p>
 <p>使用pip方式安装：</p>
 <pre><code>sudo pip install virtualenv
@@ -481,37 +342,62 @@ source ./bin/activate
 <h2 id="退出虚拟环境"><a href="#退出虚拟环境" class="headerlink" title="退出虚拟环境"></a>退出虚拟环境</h2><pre><code>deactive
 </code></pre><h2 id="删除环境"><a href="#删除环境" class="headerlink" title="删除环境"></a>删除环境</h2><p>退出虚拟环境后，删除对应的虚拟环境目录即可</p>
 
-          
+      
+    </div>
+
+    <div>
+      
         
+
       
     </div>
 
     <div>
       
-    </div>
+        
 
-    <div>
       
     </div>
 
 
     <footer class="post-footer">
       
-
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
       
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/26/scrapy1-md/" rel="prev" title="scrapy学习(一) ：环境配置">
+                scrapy学习(一) ：环境配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
       
-        <div class="post-eof"></div>
+
+      
       
     </footer>
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
           
           </div>
@@ -519,6 +405,10 @@ source ./bin/activate
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -538,8 +428,17 @@ source ./bin/activate
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -588,6 +487,22 @@ source ./bin/activate
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么要使用virtualenv"><span class="nav-number">1.</span> <span class="nav-text">为什么要使用virtualenv</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装virtualenv"><span class="nav-number">2.</span> <span class="nav-text">安装virtualenv</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用virtualenv"><span class="nav-number">3.</span> <span class="nav-text">使用virtualenv</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建环境"><span class="nav-number">3.1.</span> <span class="nav-text">创建环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#激活虚拟环境"><span class="nav-number">3.2.</span> <span class="nav-text">激活虚拟环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#退出虚拟环境"><span class="nav-number">3.3.</span> <span class="nav-text">退出虚拟环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除环境"><span class="nav-number">3.4.</span> <span class="nav-text">删除环境</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
     </div>
@@ -687,6 +602,10 @@ source ./bin/activate
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
 
   
 
@@ -718,6 +637,10 @@ source ./bin/activate
 
   
 
+  
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid="></script>
+      <!-- UY END -->
   
 
 
