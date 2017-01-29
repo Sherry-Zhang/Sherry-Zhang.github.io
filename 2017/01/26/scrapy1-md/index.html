@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="python," />
+  <meta name="keywords" content="python,爬虫," />
 
 
 
@@ -77,32 +77,32 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+  <link rel="shortcut icon" type="image/x-icon" href="/images/logo.ico?v=5.1.0" />
 
 
 
 
 
 
-<meta name="description" content="scrapy框架需要在Python 2.7，lxml，OpenSSL的基础之上创建。
-系统：ubuntu 16.04 LTS
-安装缺失的依赖包ubuntu16.04中直接安装scrapy会报错，需要先手动安装一些缺失的依赖包
-$ sudo apt-get install libxml2-dev libxslt1-dev python-dev libssl-dev libffi-dev  build">
+<meta name="description" content="scrapy是一个基于Twisted异步网络库，纯Python实现的爬虫框架。可以用于数据挖掘、监测和自动化测试。
+官方文档
+scrapy框架需要在Python 2.7，lxml，OpenSSL的基础之上创建。
+系统：ubuntu 16.04 LTS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="scrapy学习(一) ：环境配置">
 <meta property="og:url" content="http://www.zshu.me/2017/01/26/scrapy1-md/index.html">
 <meta property="og:site_name" content="点 线 面">
-<meta property="og:description" content="scrapy框架需要在Python 2.7，lxml，OpenSSL的基础之上创建。
-系统：ubuntu 16.04 LTS
-安装缺失的依赖包ubuntu16.04中直接安装scrapy会报错，需要先手动安装一些缺失的依赖包
-$ sudo apt-get install libxml2-dev libxslt1-dev python-dev libssl-dev libffi-dev  build">
-<meta property="og:updated_time" content="2017-01-27T03:40:01.913Z">
+<meta property="og:description" content="scrapy是一个基于Twisted异步网络库，纯Python实现的爬虫框架。可以用于数据挖掘、监测和自动化测试。
+官方文档
+scrapy框架需要在Python 2.7，lxml，OpenSSL的基础之上创建。
+系统：ubuntu 16.04 LTS">
+<meta property="og:updated_time" content="2017-01-28T12:13:56.642Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="scrapy学习(一) ：环境配置">
-<meta name="twitter:description" content="scrapy框架需要在Python 2.7，lxml，OpenSSL的基础之上创建。
-系统：ubuntu 16.04 LTS
-安装缺失的依赖包ubuntu16.04中直接安装scrapy会报错，需要先手动安装一些缺失的依赖包
-$ sudo apt-get install libxml2-dev libxslt1-dev python-dev libssl-dev libffi-dev  build">
+<meta name="twitter:description" content="scrapy是一个基于Twisted异步网络库，纯Python实现的爬虫框架。可以用于数据挖掘、监测和自动化测试。
+官方文档
+scrapy框架需要在Python 2.7，lxml，OpenSSL的基础之上创建。
+系统：ubuntu 16.04 LTS">
 
 
 
@@ -197,6 +197,16 @@ $ sudo apt-get install libxml2-dev libxslt1-dev python-dev libssl-dev libffi-dev
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
           </a>
         </li>
       
@@ -299,6 +309,28 @@ $ sudo apt-get install libxml2-dev libxslt1-dev python-dev libssl-dev libffi-dev
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -324,37 +356,17 @@ $ sudo apt-get install libxml2-dev libxslt1-dev python-dev libssl-dev libffi-dev
       
 
       
-        <p>scrapy框架需要在Python 2.7，lxml，OpenSSL的基础之上创建。</p>
+        <p>scrapy是一个基于Twisted异步网络库，纯Python实现的爬虫框架。可以用于数据挖掘、监测和自动化测试。</p>
+<p><a href="https://doc.scrapy.org/en/latest/" target="_blank" rel="external">官方文档</a></p>
+<p>scrapy框架需要在Python 2.7，lxml，OpenSSL的基础之上创建。</p>
 <p>系统：ubuntu 16.04 LTS</p>
-<h1 id="安装缺失的依赖包"><a href="#安装缺失的依赖包" class="headerlink" title="安装缺失的依赖包"></a>安装缺失的依赖包</h1><p>ubuntu16.04中直接安装scrapy会报错，需要先手动安装一些缺失的依赖包</p>
-<pre><code>$ sudo apt-get install libxml2-dev libxslt1-dev python-dev libssl-dev libffi-dev  build-essential
-</code></pre><h1 id="安装lxml库"><a href="#安装lxml库" class="headerlink" title="安装lxml库"></a>安装lxml库</h1><pre><code>$ pip install lxml
-</code></pre><h1 id="安装openssl库"><a href="#安装openssl库" class="headerlink" title="安装openssl库"></a>安装openssl库</h1><p>无须安装，ubuntu16.04中默认配置中有openssl，安装scrapy时会自动安装依赖。</p>
-<h1 id="安装scrapy"><a href="#安装scrapy" class="headerlink" title="安装scrapy"></a>安装scrapy</h1><pre><code>$ pip install scrapy
-</code></pre><h1 id="安装完成，检查"><a href="#安装完成，检查" class="headerlink" title="安装完成，检查"></a>安装完成，检查</h1><p>在命令行中输入scrapy，显示如下界面，表示安装成功。</p>
-<pre><code>(env0) zs@ubuntu:~/workspace/env0$ scrapy
-Scrapy 1.3.0 - no active project
+<a id="more"></a>
+<h1 id="安装缺失的依赖包"><a href="#安装缺失的依赖包" class="headerlink" title="安装缺失的依赖包"></a>安装缺失的依赖包</h1><p>ubuntu16.04中直接安装scrapy会报错，需要先手动安装一些缺失的依赖包<br><figure class="highlight sh"><table><tr><td class="code"><pre><div class="line">$ sudo apt-get install libxml2-dev libxslt1-dev python-dev libssl-dev libffi-dev  build-essential</div></pre></td></tr></table></figure></p>
+<h1 id="lxml库"><a href="#lxml库" class="headerlink" title="lxml库"></a>lxml库</h1><figure class="highlight sh"><table><tr><td class="code"><pre><div class="line">$ pip install lxml</div></pre></td></tr></table></figure>
+<h1 id="openssl库"><a href="#openssl库" class="headerlink" title="openssl库"></a>openssl库</h1><p>无须安装，ubuntu16.04中默认配置中有openssl，安装scrapy时会自动安装依赖。</p>
+<h1 id="安装scrapy"><a href="#安装scrapy" class="headerlink" title="安装scrapy"></a>安装scrapy</h1><figure class="highlight sh"><table><tr><td class="code"><pre><div class="line">$ pip install scrapy</div></pre></td></tr></table></figure>
+<h1 id="安装完成，检查"><a href="#安装完成，检查" class="headerlink" title="安装完成，检查"></a>安装完成，检查</h1><p>在命令行中输入scrapy，显示如下界面，表示安装成功。<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">(env0) zs@ubuntu:~/workspace/env0$ scrapy</div><div class="line">Scrapy 1.3.0 - no active project</div><div class="line"></div><div class="line">Usage:</div><div class="line">    scrapy &lt;command&gt; [options] [args]</div><div class="line"></div><div class="line">Available commands:</div><div class="line">    bench         Run quick benchmark test</div><div class="line">    commands      </div><div class="line">    fetch         Fetch a URL using the Scrapy downloader</div><div class="line">    genspider     Generate new spider using pre-defined templates</div><div class="line">    runspider     Run a self-contained spider (without creating a project)</div><div class="line">    settings      Get settings values</div><div class="line">    shell         Interactive scraping console</div><div class="line">    startproject  Create new project</div><div class="line">    version       Print Scrapy version</div><div class="line">    view          Open URL in browser, as seen by Scrapy</div><div class="line"></div><div class="line">    [ more ]      More commands available when run from project directory</div><div class="line"></div><div class="line">Use &quot;scrapy &lt;command&gt; -h&quot; to see more info about a command</div><div class="line">(env0) zs@ubuntu:~/workspace/env0$</div></pre></td></tr></table></figure></p>
 
-Usage:
-  scrapy &lt;command&gt; [options] [args]
-
-Available commands:
-  bench         Run quick benchmark test
-  commands      
-  fetch         Fetch a URL using the Scrapy downloader
-  genspider     Generate new spider using pre-defined templates
-  runspider     Run a self-contained spider (without creating a project)
-  settings      Get settings values
-  shell         Interactive scraping console
-  startproject  Create new project
-  version       Print Scrapy version
-  view          Open URL in browser, as seen by Scrapy
-
-  [ more ]      More commands available when run from project directory
-
-Use &quot;scrapy &lt;command&gt; -h&quot; to see more info about a command
-(env0) zs@ubuntu:~/workspace/env0$ 
-</code></pre>
       
     </div>
 
@@ -378,6 +390,8 @@ Use &quot;scrapy &lt;command&gt; -h&quot; to see more info about a command
         <div class="post-tags">
           
             <a href="/tags/python/" rel="tag"># python</a>
+          
+            <a href="/tags/爬虫/" rel="tag"># 爬虫</a>
           
         </div>
       
@@ -475,11 +489,18 @@ Use &quot;scrapy &lt;command&gt; -h&quot; to see more info about a command
           
 
           
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
 
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -514,7 +535,7 @@ Use &quot;scrapy &lt;command&gt; -h&quot; to see more info about a command
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装缺失的依赖包"><span class="nav-number">1.</span> <span class="nav-text">安装缺失的依赖包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装lxml库"><span class="nav-number">2.</span> <span class="nav-text">安装lxml库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装openssl库"><span class="nav-number">3.</span> <span class="nav-text">安装openssl库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装scrapy"><span class="nav-number">4.</span> <span class="nav-text">安装scrapy</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装完成，检查"><span class="nav-number">5.</span> <span class="nav-text">安装完成，检查</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装缺失的依赖包"><span class="nav-number">1.</span> <span class="nav-text">安装缺失的依赖包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lxml库"><span class="nav-number">2.</span> <span class="nav-text">lxml库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#openssl库"><span class="nav-number">3.</span> <span class="nav-text">openssl库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装scrapy"><span class="nav-number">4.</span> <span class="nav-text">安装scrapy</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装完成，检查"><span class="nav-number">5.</span> <span class="nav-text">安装完成，检查</span></a></li></ol></div>
             
 
           </div>

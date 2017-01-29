@@ -77,7 +77,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+  <link rel="shortcut icon" type="image/x-icon" href="/images/logo.ico?v=5.1.0" />
 
 
 
@@ -193,6 +193,16 @@
         </li>
       
         
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
@@ -294,6 +304,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -320,47 +352,16 @@
 
       
         
-          
-            <h1 id="初始化一个scrapy项目"><a href="#初始化一个scrapy项目" class="headerlink" title="初始化一个scrapy项目"></a>初始化一个scrapy项目</h1><p>使用命令行初始化，执行：<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">$ scrapy startproject [项目名]</div></pre></td></tr></table></figure></p>
+          <h1 id="初始化一个scrapy项目"><a href="#初始化一个scrapy项目" class="headerlink" title="初始化一个scrapy项目"></a>初始化一个scrapy项目</h1><p>使用命令行初始化，执行：<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">$ scrapy startproject [项目名]</div></pre></td></tr></table></figure></p>
 <p>初始的目录结构如下</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">[项目名]/</div><div class="line">├── scrapy.cfg                # scrapy的部署配置文件</div><div class="line">└── [项目名]                   # 项目的python块，我们的代码就放到这里</div><div class="line">        ├── __init__.py       </div><div class="line">        ├── items.py          # 项目的目标文件（要爬取的对象） </div><div class="line">        ├── middlewares.py     </div><div class="line">        ├── pipelines.py      # 项目的管道文件（确定存储内容和方式）</div><div class="line">        ├── settings.py       # 项目的配置文件</div><div class="line">        └── spiders           # 项目的爬虫文件</div><div class="line">                └── __init__.py</div></pre></td></tr></table></figure>
-<h1 id="scrapy项目各部分功能-一"><a href="#scrapy项目各部分功能-一" class="headerlink" title="scrapy项目各部分功能(一)"></a>scrapy项目各部分功能(一)</h1><p>以<strong>爬取猫眼电影首页数据</strong>为例：</p>
-<h2 id="spiders"><a href="#spiders" class="headerlink" title="spiders"></a>spiders</h2><p>爬虫模块，负责的功能有：</p>
-<ul>
-<li>配置需要爬取的数据的来源(urls)</li>
-<li>配置爬取规则</li>
-<li>解析结构化数据</li>
-</ul>
-<p>在spiders目录下面新建一个爬虫模块<code>maoyanSpider.py</code>。它必须继承 <code>scrapy.Spider</code>类， 且定义以下三个属性:</p>
-<ul>
-<li><code>name</code>: 爬虫的名字，必须唯一。通过控制台启动爬虫时，是根据这个名字来启动的。</li>
-<li><code>start_urls</code>: 初始爬取的url列表。 </li>
-<li><code>parse()</code> response结果处理函数。负责解析返回的数据(response data)，提取数据(生成item)以及生成需要进一步处理的URL的 Request 对象。</li>
-</ul>
-<p>爬虫的功能为下载猫眼首页的数据，则<code>maoyanSpider.py</code>的程序可以写为：<br><figure class="highlight py"><table><tr><td class="code"><pre><div class="line"><span class="comment"># coding:utf-8</span></div><div class="line"><span class="keyword">import</span> scrapy</div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MaoyanSpider</span><span class="params">(scrapy.Spider)</span>:</span></div><div class="line">	name = <span class="string">"maoyan"</span>   <span class="comment"># 爬虫的名字，执行时使用</span></div><div class="line">	start_urls = [			</div><div class="line">		<span class="string">"http://maoyan.com/"</span>  <span class="comment"># 起始url列表，此例只爬这一个页面</span></div><div class="line">	]</div><div class="line">	<span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span>		</div><div class="line">		<span class="keyword">with</span> open(<span class="string">"maoyanIndex.html"</span>,<span class="string">"w"</span>) <span class="keyword">as</span> f:</div><div class="line">			f.write(response.body)</div></pre></td></tr></table></figure></p>
-<h2 id="settings-py"><a href="#settings-py" class="headerlink" title="settings.py"></a>settings.py</h2><p>注释着很多常用的配置项，通过在其他文件中引入本文件的方式来使用这些配置项。默认打开的配置项：</p>
-<figure class="highlight py"><table><tr><td class="code"><pre><div class="line">BOT_NAME = <span class="string">'maoyan'</span></div><div class="line"></div><div class="line">SPIDER_MODULES = [<span class="string">'maoyan.spiders'</span>]</div><div class="line">NEWSPIDER_MODULE = <span class="string">'maoyan.spiders'</span></div><div class="line"></div><div class="line"><span class="comment"># Obey robots.txt rules</span></div><div class="line">ROBOTSTXT_OBEY = <span class="keyword">True</span></div></pre></td></tr></table></figure>
-<p>robots.txt是遵循Robot协议的一个文件，它保存在网站的服务器中，它的作用是，告诉搜索引擎爬虫，本网站哪些目录下的网页<strong>不希望</strong>你进行爬取收录。在Scrapy启动后，会在第一时间访问网站的robots.txt文件，然后决定该网站的爬取范围。</p>
-<p>由于我们并不是写搜索引擎，很多时候需要爬取的东西不是网站希望我们爬取的，是违反Robot协议的。因此<code>settings.py</code>里的这项值要改为<code>False</code></p>
-<h2 id="运行爬虫程序"><a href="#运行爬虫程序" class="headerlink" title="运行爬虫程序"></a>运行爬虫程序</h2><p>到项目根目录下，通过命令行运行爬虫 ：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">$ scrapy crawl maoyan</div></pre></td></tr></table></figure>
-<p>根目录下生成了一个<code>maoyanIndex.html</code>的文件，正是我们下载的猫眼首页内容。</p>
-<h1 id="scrapy项目各部分功能-二"><a href="#scrapy项目各部分功能-二" class="headerlink" title="scrapy项目各部分功能(二)"></a>scrapy项目各部分功能(二)</h1><p>上个示例仅为下载网页，并没有对数据做解析提取处理，接下来以<strong>爬取猫眼首页今日票房榜前十的电影</strong>为例，演示scrapy项目模块中<code>items.py</code>和<code>pipelines.py</code>的功能。</p>
-<h2 id="items-py"><a href="#items-py" class="headerlink" title="items.py"></a>items.py</h2><p>功能：定义我们需要的结构化数据，相当于定义类。<br><br>默认的items.py如下：<br><figure class="highlight py"><table><tr><td class="code"><pre><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div><div class="line"></div><div class="line"><span class="comment"># Define here the models for your scraped items</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># See documentation in:</span></div><div class="line"><span class="comment"># http://doc.scrapy.org/en/latest/topics/items.html</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> scrapy</div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MaoyanItem</span><span class="params">(scrapy.Item)</span>:</span></div><div class="line">    <span class="comment"># define the fields for your item here like:</span></div><div class="line">    <span class="comment"># name = scrapy.Field()</span></div><div class="line">    <span class="keyword">pass</span></div></pre></td></tr></table></figure></p>
-<p>需要爬取的数据为今日票房榜前十，包括电影名称，当前排名，因此修改item.py如下：<br><figure class="highlight py"><table><tr><td class="code"><pre><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div><div class="line"><span class="keyword">import</span> scrapy</div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MaoyanItem</span><span class="params">(scrapy.Item)</span>:</span></div><div class="line">    movieName = scrapy.Field()</div><div class="line">    rank = scrapy.Field()</div></pre></td></tr></table></figure></p>
-<h2 id="Selector与文本解析"><a href="#Selector与文本解析" class="headerlink" title="Selector与文本解析"></a>Selector与文本解析</h2><p>解析网页时需要用到Scrapy的Selector，它是一个基于lxml库构造的解析器，支持xpath查询和css查询。通过调用选择器方法实现。<br>选择器方法<code>( .xpath() or .css() )</code>返回相同类型的选择器列表，可以嵌套查询。<br>这里使用xpath查询方式。</p>
-<p>解析过程在 <code>maoyanSpider.py</code>中实现，修改程序如下：<br><figure class="highlight py"><table><tr><td class="code"><pre><div class="line"><span class="comment"># coding:utf-8</span></div><div class="line"><span class="keyword">import</span> scrapy</div><div class="line"><span class="keyword">from</span> scrapy.selector <span class="keyword">import</span> Selector</div><div class="line"><span class="keyword">from</span> maoyan.items <span class="keyword">import</span> MaoyanItem</div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MaoyanSpider</span><span class="params">(scrapy.Spider)</span>:</span></div><div class="line">    name = <span class="string">"maoyan"</span>   <span class="comment"># 爬虫的名字，执行时使用</span></div><div class="line">    start_urls = [          </div><div class="line">        <span class="string">"http://maoyan.com/"</span>  <span class="comment"># 起始url列表，此例只爬这一个页面</span></div><div class="line">    ]</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span>      </div><div class="line">        <span class="comment">#xpath方式定位到榜单列表</span></div><div class="line">        movieList = response.xpath(<span class="string">'//*[@id="app"]/div/div[1]/div[1]/div/div[2]/ul/li'</span>) </div><div class="line">        <span class="keyword">for</span> index, movie <span class="keyword">in</span> enumerate(movieList):</div><div class="line">            item = MaoyanItem() <span class="comment">#实例化一个item</span></div><div class="line">            <span class="keyword">if</span> index == <span class="number">0</span>:</div><div class="line">                item[<span class="string">'movieName'</span>] = movie.xpath(<span class="string">'a/div[2]/div/span/text()'</span>).extract()  </div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                item[<span class="string">'movieName'</span>] = movie.xpath(<span class="string">"a/span/span[1]/text()"</span>).extract()</div><div class="line">            item[<span class="string">'rank'</span>] = index + <span class="number">1</span></div><div class="line">            <span class="keyword">yield</span> item</div></pre></td></tr></table></figure></p>
-<h2 id="pipelines-py"><a href="#pipelines-py" class="headerlink" title="pipelines.py"></a>pipelines.py</h2><p>功能：对spider中实例化的item做进一步的处理，例如保存入库，以下是一些典型应用。</p>
-<ul>
-<li>清理HTML数据</li>
-<li>验证爬取的数据(检查item包含某些字段)</li>
-<li>查重(并丢弃)</li>
-<li>将爬取结果保存到数据库中</li>
-</ul>
-<p>这里我们使用pipeline将爬取到的榜单数据保存到文件中, 代码如下：<br><figure class="highlight py"><table><tr><td class="code"><pre><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div><div class="line"></div><div class="line"><span class="comment"># Define your item pipelines here</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># Don't forget to add your pipeline to the ITEM_PIPELINES setting</span></div><div class="line"><span class="comment"># See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MaoyanPipeline</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_item</span><span class="params">(self, item, spider)</span>:</span></div><div class="line">        <span class="keyword">with</span> open(<span class="string">"movie.txt"</span>,<span class="string">"a"</span>) <span class="keyword">as</span> f:</div><div class="line">        <span class="comment">#转码以正常输出中文字符</span></div><div class="line">            item_string = str(item).decode(<span class="string">"unicode_escape"</span>).encode(<span class="string">'utf-8'</span>) </div><div class="line">            <span class="keyword">print</span> &gt;&gt; f, item_string</div><div class="line">        <span class="keyword">return</span> item</div></pre></td></tr></table></figure></p>
-<h2 id="结果截图"><a href="#结果截图" class="headerlink" title="结果截图"></a>结果截图</h2><p><img src="/2017/01/28/scrapy2/1.png" alt=""></p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/01/28/scrapy2/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -450,6 +451,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -476,39 +499,17 @@
 
       
         
-          
-            <p>scrapy框架需要在Python 2.7，lxml，OpenSSL的基础之上创建。</p>
+          <p>scrapy是一个基于Twisted异步网络库，纯Python实现的爬虫框架。可以用于数据挖掘、监测和自动化测试。</p>
+<p><a href="https://doc.scrapy.org/en/latest/">官方文档</a></p>
+<p>scrapy框架需要在Python 2.7，lxml，OpenSSL的基础之上创建。</p>
 <p>系统：ubuntu 16.04 LTS</p>
-<h1 id="安装缺失的依赖包"><a href="#安装缺失的依赖包" class="headerlink" title="安装缺失的依赖包"></a>安装缺失的依赖包</h1><p>ubuntu16.04中直接安装scrapy会报错，需要先手动安装一些缺失的依赖包</p>
-<pre><code>$ sudo apt-get install libxml2-dev libxslt1-dev python-dev libssl-dev libffi-dev  build-essential
-</code></pre><h1 id="安装lxml库"><a href="#安装lxml库" class="headerlink" title="安装lxml库"></a>安装lxml库</h1><pre><code>$ pip install lxml
-</code></pre><h1 id="安装openssl库"><a href="#安装openssl库" class="headerlink" title="安装openssl库"></a>安装openssl库</h1><p>无须安装，ubuntu16.04中默认配置中有openssl，安装scrapy时会自动安装依赖。</p>
-<h1 id="安装scrapy"><a href="#安装scrapy" class="headerlink" title="安装scrapy"></a>安装scrapy</h1><pre><code>$ pip install scrapy
-</code></pre><h1 id="安装完成，检查"><a href="#安装完成，检查" class="headerlink" title="安装完成，检查"></a>安装完成，检查</h1><p>在命令行中输入scrapy，显示如下界面，表示安装成功。</p>
-<pre><code>(env0) zs@ubuntu:~/workspace/env0$ scrapy
-Scrapy 1.3.0 - no active project
-
-Usage:
-  scrapy &lt;command&gt; [options] [args]
-
-Available commands:
-  bench         Run quick benchmark test
-  commands      
-  fetch         Fetch a URL using the Scrapy downloader
-  genspider     Generate new spider using pre-defined templates
-  runspider     Run a self-contained spider (without creating a project)
-  settings      Get settings values
-  shell         Interactive scraping console
-  startproject  Create new project
-  version       Print Scrapy version
-  view          Open URL in browser, as seen by Scrapy
-
-  [ more ]      More commands available when run from project directory
-
-Use &quot;scrapy &lt;command&gt; -h&quot; to see more info about a command
-(env0) zs@ubuntu:~/workspace/env0$ 
-</code></pre>
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/01/26/scrapy1-md/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -598,6 +599,28 @@ Use &quot;scrapy &lt;command&gt; -h&quot; to see more info about a command
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -624,20 +647,17 @@ Use &quot;scrapy &lt;command&gt; -h&quot; to see more info about a command
 
       
         
-          
-            <h1 id="为什么要使用virtualenv"><a href="#为什么要使用virtualenv" class="headerlink" title="为什么要使用virtualenv"></a>为什么要使用virtualenv</h1><p>virtualenv 用于创建虚拟的独立python环境，不同的项目使用的第三方库所依赖的包的版本可能不一致，使用virtualenv可以隔离项目之间的第三方包依赖。</p>
+          <h1 id="为什么要使用virtualenv"><a href="#为什么要使用virtualenv" class="headerlink" title="为什么要使用virtualenv"></a>为什么要使用virtualenv</h1><p>virtualenv 用于创建虚拟的独立python环境，不同的项目使用的第三方库所依赖的包的版本可能不一致，使用virtualenv可以隔离项目之间的第三方包依赖。</p>
 <h1 id="安装virtualenv"><a href="#安装virtualenv" class="headerlink" title="安装virtualenv"></a>安装virtualenv</h1><p>环境：ubuntu 16.04 LTS</p>
-<p>使用pip方式安装：</p>
-<pre><code>sudo pip install virtualenv
-</code></pre><p>我的版本：virtualenv (15.1.0)</p>
-<h1 id="使用virtualenv"><a href="#使用virtualenv" class="headerlink" title="使用virtualenv"></a>使用virtualenv</h1><h2 id="创建环境"><a href="#创建环境" class="headerlink" title="创建环境"></a>创建环境</h2><pre><code>virtualenv [ENV]
-</code></pre><h2 id="激活虚拟环境"><a href="#激活虚拟环境" class="headerlink" title="激活虚拟环境"></a>激活虚拟环境</h2><pre><code>cd [ENV]
-source ./bin/activate
-</code></pre><p>激活后在命令行的前面会出现新环境名称</p>
-<h2 id="退出虚拟环境"><a href="#退出虚拟环境" class="headerlink" title="退出虚拟环境"></a>退出虚拟环境</h2><pre><code>deactive
-</code></pre><h2 id="删除环境"><a href="#删除环境" class="headerlink" title="删除环境"></a>删除环境</h2><p>退出虚拟环境后，删除对应的虚拟环境目录即可</p>
-
-          
+<p>使用pip方式安装：<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">sudo pip install virtualenv</div></pre></td></tr></table></figure></p>
+<p>我的版本：virtualenv (15.1.0)</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/01/26/virtualenv/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -715,11 +735,18 @@ source ./bin/activate
           
 
           
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
 
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

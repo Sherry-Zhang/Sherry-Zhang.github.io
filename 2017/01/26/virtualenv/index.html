@@ -77,7 +77,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+  <link rel="shortcut icon" type="image/x-icon" href="/images/logo.ico?v=5.1.0" />
 
 
 
@@ -86,29 +86,23 @@
 
 <meta name="description" content="为什么要使用virtualenvvirtualenv 用于创建虚拟的独立python环境，不同的项目使用的第三方库所依赖的包的版本可能不一致，使用virtualenv可以隔离项目之间的第三方包依赖。
 安装virtualenv环境：ubuntu 16.04 LTS
-使用pip方式安装：
-sudo pip install virtualenv
-我的版本：virtualenv (15.1.0)
-使用vi">
+使用pip方式安装：sudo pip install virtualenv
+我的版本：virtualenv (15.1.0)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="virtualenv的使用">
 <meta property="og:url" content="http://www.zshu.me/2017/01/26/virtualenv/index.html">
 <meta property="og:site_name" content="点 线 面">
 <meta property="og:description" content="为什么要使用virtualenvvirtualenv 用于创建虚拟的独立python环境，不同的项目使用的第三方库所依赖的包的版本可能不一致，使用virtualenv可以隔离项目之间的第三方包依赖。
 安装virtualenv环境：ubuntu 16.04 LTS
-使用pip方式安装：
-sudo pip install virtualenv
-我的版本：virtualenv (15.1.0)
-使用vi">
-<meta property="og:updated_time" content="2017-01-26T07:04:02.859Z">
+使用pip方式安装：sudo pip install virtualenv
+我的版本：virtualenv (15.1.0)">
+<meta property="og:updated_time" content="2017-01-28T12:13:48.546Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="virtualenv的使用">
 <meta name="twitter:description" content="为什么要使用virtualenvvirtualenv 用于创建虚拟的独立python环境，不同的项目使用的第三方库所依赖的包的版本可能不一致，使用virtualenv可以隔离项目之间的第三方包依赖。
 安装virtualenv环境：ubuntu 16.04 LTS
-使用pip方式安装：
-sudo pip install virtualenv
-我的版本：virtualenv (15.1.0)
-使用vi">
+使用pip方式安装：sudo pip install virtualenv
+我的版本：virtualenv (15.1.0)">
 
 
 
@@ -203,6 +197,16 @@ sudo pip install virtualenv
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
           </a>
         </li>
       
@@ -305,6 +309,28 @@ sudo pip install virtualenv
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -332,15 +358,24 @@ sudo pip install virtualenv
       
         <h1 id="为什么要使用virtualenv"><a href="#为什么要使用virtualenv" class="headerlink" title="为什么要使用virtualenv"></a>为什么要使用virtualenv</h1><p>virtualenv 用于创建虚拟的独立python环境，不同的项目使用的第三方库所依赖的包的版本可能不一致，使用virtualenv可以隔离项目之间的第三方包依赖。</p>
 <h1 id="安装virtualenv"><a href="#安装virtualenv" class="headerlink" title="安装virtualenv"></a>安装virtualenv</h1><p>环境：ubuntu 16.04 LTS</p>
-<p>使用pip方式安装：</p>
-<pre><code>sudo pip install virtualenv
-</code></pre><p>我的版本：virtualenv (15.1.0)</p>
-<h1 id="使用virtualenv"><a href="#使用virtualenv" class="headerlink" title="使用virtualenv"></a>使用virtualenv</h1><h2 id="创建环境"><a href="#创建环境" class="headerlink" title="创建环境"></a>创建环境</h2><pre><code>virtualenv [ENV]
-</code></pre><h2 id="激活虚拟环境"><a href="#激活虚拟环境" class="headerlink" title="激活虚拟环境"></a>激活虚拟环境</h2><pre><code>cd [ENV]
-source ./bin/activate
-</code></pre><p>激活后在命令行的前面会出现新环境名称</p>
-<h2 id="退出虚拟环境"><a href="#退出虚拟环境" class="headerlink" title="退出虚拟环境"></a>退出虚拟环境</h2><pre><code>deactive
-</code></pre><h2 id="删除环境"><a href="#删除环境" class="headerlink" title="删除环境"></a>删除环境</h2><p>退出虚拟环境后，删除对应的虚拟环境目录即可</p>
+<p>使用pip方式安装：<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">sudo pip install virtualenv</div></pre></td></tr></table></figure></p>
+<p>我的版本：virtualenv (15.1.0)</p>
+<a id="more"></a>
+<h1 id="使用virtualenv"><a href="#使用virtualenv" class="headerlink" title="使用virtualenv"></a>使用virtualenv</h1><h2 id="创建环境"><a href="#创建环境" class="headerlink" title="创建环境"></a>创建环境</h2><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">virtualenv [ENV]</div></pre></td></tr></table></figure>
+<h2 id="激活虚拟环境"><a href="#激活虚拟环境" class="headerlink" title="激活虚拟环境"></a>激活虚拟环境</h2><ol>
+<li><p>手动激活：</p>
+ <figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">cd [ENV]</div><div class="line">source ./bin/activate</div></pre></td></tr></table></figure>
+<p> 激活后在命令行的前面会出现新环境名称，像这样：</p>
+ <figure class="highlight sh"><table><tr><td class="code"><pre><div class="line">(env0) zs@ubuntu:~/workspace/env0$</div></pre></td></tr></table></figure>
+</li>
+<li><p>自动激活：</p>
+<p> 手动激活的有效范围仅存在于当前会话，新打开一个终端默认是不进入虚拟环境的，但是我们经常会开多个命令行，每次都手动激活的话太过麻烦，因此可以修改配置文件，在<code>~/.bashrc</code>中加入一行：</p>
+ <figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">source \$VIRTUALENVPATH/bin/activate</div></pre></td></tr></table></figure>
+<p> 这样新打开的终端默认就是激活的。</p>
+</li>
+</ol>
+<h2 id="退出虚拟环境"><a href="#退出虚拟环境" class="headerlink" title="退出虚拟环境"></a>退出虚拟环境</h2><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">deactive</div></pre></td></tr></table></figure>
+<h2 id="删除环境"><a href="#删除环境" class="headerlink" title="删除环境"></a>删除环境</h2><p>退出虚拟环境后，删除对应的虚拟环境目录即可</p>
 
       
     </div>
@@ -458,11 +493,18 @@ source ./bin/activate
           
 
           
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
 
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
