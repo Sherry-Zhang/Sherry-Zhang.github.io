@@ -100,7 +100,7 @@
 注意copy构造函数和copy assignment适用场景的区别。
 
 函数调用时，传递参数用pass-by-value意味着调用copy构造函数。尽量以Pass-by-reference-to-const传递用户自定义类型的参数。">
-<meta property="og:updated_time" content="2017-02-25T13:30:50.395Z">
+<meta property="og:updated_time" content="2017-02-25T14:02:27.027Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="effective c++ 读书笔记">
 <meta name="twitter:description" content="导读
@@ -384,6 +384,14 @@
 <li>const成员函数和非const成员函数可以重载。（重载[ ]操作符最好重载两个版本） 当const与non-const成员函数有着实质等价的实现时，令non-const版本调用const版本可以避免代码重复，例如： <figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line"><span class="keyword">const</span> <span class="keyword">char</span>&amp; <span class="keyword">operator</span>[](<span class="built_in">std</span>::<span class="keyword">size_t</span> position)<span class="keyword">const</span></div><div class="line">&#123;</div><div class="line">    ...</div><div class="line">    <span class="keyword">return</span> text[position];</div><div class="line">&#125;</div><div class="line"><span class="keyword">char</span>&amp; <span class="keyword">operator</span>[](<span class="built_in">std</span>::<span class="keyword">size_t</span> position)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">const_cast</span>&lt;<span class="keyword">char</span>&amp;&gt;(</div><div class="line">        <span class="keyword">static_cast</span>&lt;<span class="keyword">const</span> TextBlock&amp;&gt;(*<span class="keyword">this</span>)[position];</div><div class="line">    )</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 </li>
 </ol>
+<h1 id="item4"><a href="#item4" class="headerlink" title="item4"></a>item4</h1><ol>
+<li>尽量在定义内置类型对象时进行手工初始化</li>
+<li>构造函数初始化对象尽力使用成员初始化列表，而不要使用函数内的赋值操作。原因：搞清楚变量初始化和变量赋值的区别。第一种方法更高效。</li>
+<li>初始化列表中的成员初始化顺序应当与定义的顺序相同。</li>
+<li>无法确定不同类之间的初始化顺序。因此需要警惕不同类之间相互有联系时某些类未初始化完成就被使用的情况。</li>
+<li>解决4的方式：尽量使用局部静态对象代替全局对象。（单例模式的一种实现手段）。例如： <figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line"><span class="keyword">class</span> Singleton &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">static</span> Singleton&amp; <span class="title">Instance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">static</span> Singleton theSingleton;</div><div class="line">        <span class="keyword">return</span> theSingleton;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/* more (non-static) functions here */</span></div><div class="line"></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    Singleton();                            <span class="comment">// ctor hidden</span></div><div class="line">    Singleton(Singleton <span class="keyword">const</span>&amp;);            <span class="comment">// copy ctor hidden</span></div><div class="line">    Singleton&amp; <span class="keyword">operator</span>=(Singleton <span class="keyword">const</span>&amp;); <span class="comment">// assign op. hidden</span></div><div class="line">    ~Singleton();                           <span class="comment">// dtor hidden</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+</li>
+</ol>
 <p>(陆续更新中)</p>
 
       
@@ -548,7 +556,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#导读"><span class="nav-number">1.</span> <span class="nav-text">导读</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#item1"><span class="nav-number">2.</span> <span class="nav-text">item1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#item2"><span class="nav-number">3.</span> <span class="nav-text">item2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#item3"><span class="nav-number">4.</span> <span class="nav-text">item3</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#导读"><span class="nav-number">1.</span> <span class="nav-text">导读</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#item1"><span class="nav-number">2.</span> <span class="nav-text">item1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#item2"><span class="nav-number">3.</span> <span class="nav-text">item2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#item3"><span class="nav-number">4.</span> <span class="nav-text">item3</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#item4"><span class="nav-number">5.</span> <span class="nav-text">item4</span></a></li></ol></div>
             
 
           </div>
