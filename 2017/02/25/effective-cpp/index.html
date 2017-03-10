@@ -87,7 +87,7 @@
 <meta name="description" content="导读
 应经常把构造函数声明为explicit 的，以避免发生非预期的隐式类型转换
 
-注意copy构造函数和copy assignment适用场景的区别。
+注意 copy构造函数 和 赋值运算符重载函数（copy assignment）适用场景的区别。
 
 函数调用时，传递参数用pass-by-value意味着调用copy构造函数。尽量以Pass-by-reference-to-const传递用户自定义类型的参数。">
 <meta property="og:type" content="article">
@@ -97,16 +97,16 @@
 <meta property="og:description" content="导读
 应经常把构造函数声明为explicit 的，以避免发生非预期的隐式类型转换
 
-注意copy构造函数和copy assignment适用场景的区别。
+注意 copy构造函数 和 赋值运算符重载函数（copy assignment）适用场景的区别。
 
 函数调用时，传递参数用pass-by-value意味着调用copy构造函数。尽量以Pass-by-reference-to-const传递用户自定义类型的参数。">
-<meta property="og:updated_time" content="2017-02-25T14:02:27.027Z">
+<meta property="og:updated_time" content="2017-03-10T08:08:13.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="effective c++ 读书笔记">
 <meta name="twitter:description" content="导读
 应经常把构造函数声明为explicit 的，以避免发生非预期的隐式类型转换
 
-注意copy构造函数和copy assignment适用场景的区别。
+注意 copy构造函数 和 赋值运算符重载函数（copy assignment）适用场景的区别。
 
 函数调用时，传递参数用pass-by-value意味着调用copy构造函数。尽量以Pass-by-reference-to-const传递用户自定义类型的参数。">
 
@@ -365,7 +365,7 @@
         <h1 id="导读"><a href="#导读" class="headerlink" title="导读"></a>导读</h1><ol>
 <li><p>应经常把构造函数声明为<code>explicit</code> 的，以避免发生非预期的隐式类型转换</p>
 </li>
-<li><p>注意copy构造函数和copy assignment适用场景的区别。</p>
+<li><p>注意 copy构造函数 和 赋值运算符重载函数（copy assignment）适用场景的区别。</p>
 </li>
 <li><p>函数调用时，传递参数用<code>pass-by-value</code>意味着调用copy构造函数。尽量以<code>Pass-by-reference-to-const</code>传递用户自定义类型的参数。</p>
 </li>
@@ -375,21 +375,61 @@
 <li>c++有四个次语言：C、Object-Oriented-C++、Template C++、STL。高效编程守则是根据具体的情况选择使用合适的C++部分。</li>
 </ol>
 <h1 id="item2"><a href="#item2" class="headerlink" title="item2"></a>item2</h1><ol>
-<li>#define属于预处理指令，编译器不会计入符号表，无法调试。</li>
-<li>对于常量，尽量以<code>const</code>对象或者<code>enum</code>代替<code>#define</code>；对于函数，尽量以<code>inline</code>函数代替<code>#define</code> （保证类型安全）</li>
-<li>一个属于枚举类型的数值可权充<code>int</code> 类型被使用（enum hack）</li>
+<li><p>#define属于预处理指令，编译器不会计入符号表，无法调试。</p>
+</li>
+<li><p>对于常量，尽量以<code>const</code>对象或者<code>enum</code>代替<code>#define</code>；对于函数，尽量以<code>inline</code>函数代替<code>#define</code> （保证类型安全）</p>
+</li>
+<li><p>一个属于枚举类型的数值可权充<code>int</code> 类型被使用（enum hack）</p>
+</li>
 </ol>
 <h1 id="item3"><a href="#item3" class="headerlink" title="item3"></a>item3</h1><ol>
-<li>在确定不希望修改变量的值的时候，尽量以const修饰。例如重载四则运算操作符时的函数的返回值。</li>
-<li>const成员函数和非const成员函数可以重载。（重载[ ]操作符最好重载两个版本） 当const与non-const成员函数有着实质等价的实现时，令non-const版本调用const版本可以避免代码重复，例如： <figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line"><span class="keyword">const</span> <span class="keyword">char</span>&amp; <span class="keyword">operator</span>[](<span class="built_in">std</span>::<span class="keyword">size_t</span> position)<span class="keyword">const</span></div><div class="line">&#123;</div><div class="line">    ...</div><div class="line">    <span class="keyword">return</span> text[position];</div><div class="line">&#125;</div><div class="line"><span class="keyword">char</span>&amp; <span class="keyword">operator</span>[](<span class="built_in">std</span>::<span class="keyword">size_t</span> position)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">const_cast</span>&lt;<span class="keyword">char</span>&amp;&gt;(</div><div class="line">        <span class="keyword">static_cast</span>&lt;<span class="keyword">const</span> TextBlock&amp;&gt;(*<span class="keyword">this</span>)[position];</div><div class="line">    )</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<li><p>在确定不希望修改变量的值的时候，尽量以const修饰。例如重载四则运算操作符时的函数的返回值。</p>
+</li>
+<li><p>const成员函数和非const成员函数可以重载。（重载[ ]操作符最好重载两个版本） 当const与non-const成员函数有着实质等价的实现时，令non-const版本调用const版本可以避免代码重复，例如：</p>
+ <figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line"><span class="keyword">const</span> <span class="keyword">char</span>&amp; <span class="keyword">operator</span>[](<span class="built_in">std</span>::<span class="keyword">size_t</span> position)<span class="keyword">const</span></div><div class="line">&#123;</div><div class="line">    ...</div><div class="line">    <span class="keyword">return</span> text[position];</div><div class="line">&#125;</div><div class="line"><span class="keyword">char</span>&amp; <span class="keyword">operator</span>[](<span class="built_in">std</span>::<span class="keyword">size_t</span> position)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">const_cast</span>&lt;<span class="keyword">char</span>&amp;&gt;(</div><div class="line">        <span class="keyword">static_cast</span>&lt;<span class="keyword">const</span> TextBlock&amp;&gt;(*<span class="keyword">this</span>)[position];</div><div class="line">    )</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 </li>
 </ol>
 <h1 id="item4"><a href="#item4" class="headerlink" title="item4"></a>item4</h1><ol>
-<li>尽量在定义内置类型对象时进行手工初始化</li>
-<li>构造函数初始化对象尽力使用成员初始化列表，而不要使用函数内的赋值操作。原因：搞清楚变量初始化和变量赋值的区别。第一种方法更高效。</li>
-<li>初始化列表中的成员初始化顺序应当与定义的顺序相同。</li>
-<li>无法确定不同类之间的初始化顺序。因此需要警惕不同类之间相互有联系时某些类未初始化完成就被使用的情况。</li>
-<li>解决4的方式：尽量使用局部静态对象代替全局对象。（单例模式的一种实现手段）。例如： <figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line"><span class="keyword">class</span> Singleton &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">static</span> Singleton&amp; <span class="title">Instance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">static</span> Singleton theSingleton;</div><div class="line">        <span class="keyword">return</span> theSingleton;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/* more (non-static) functions here */</span></div><div class="line"></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    Singleton();                            <span class="comment">// ctor hidden</span></div><div class="line">    Singleton(Singleton <span class="keyword">const</span>&amp;);            <span class="comment">// copy ctor hidden</span></div><div class="line">    Singleton&amp; <span class="keyword">operator</span>=(Singleton <span class="keyword">const</span>&amp;); <span class="comment">// assign op. hidden</span></div><div class="line">    ~Singleton();                           <span class="comment">// dtor hidden</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<li><p>尽量在定义内置类型对象时进行手工初始化。原因：使用对象之前必须保证对象被初始化过，否则会产生未定义的行为，而c++编译器不保证初始化内置类型。</p>
+</li>
+<li><p>构造函数初始化对象尽力使用成员初始化列表，而不要使用函数内的赋值操作。原因：搞清楚变量初始化和变量赋值的区别。第一种方法更高效。</p>
+</li>
+<li><p>初始化列表中的成员初始化顺序应当与定义的顺序相同。</p>
+</li>
+<li><p>无法确定不同类之间的初始化顺序。因此需要警惕不同类之间相互有联系时某些类未初始化完成就被使用的情况。</p>
+</li>
+<li><p>解决4的方式：尽量使用局部静态对象代替全局对象。（单例模式的一种实现手段）。例如：</p>
+ <figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line"><span class="keyword">class</span> Singleton &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">static</span> Singleton&amp; <span class="title">Instance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">static</span> Singleton theSingleton;</div><div class="line">        <span class="keyword">return</span> theSingleton;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/* more (non-static) functions here */</span></div><div class="line"></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    Singleton();                            <span class="comment">// ctor hidden</span></div><div class="line">    Singleton(Singleton <span class="keyword">const</span>&amp;);            <span class="comment">// copy ctor hidden</span></div><div class="line">    Singleton&amp; <span class="keyword">operator</span>=(Singleton <span class="keyword">const</span>&amp;); <span class="comment">// assign op. hidden</span></div><div class="line">    ~Singleton();                           <span class="comment">// dtor hidden</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="item5"><a href="#item5" class="headerlink" title="item5"></a>item5</h1><ol>
+<li><p>如果用户自己未定义的话，编译器会为class生成默认的无参构造函数、copy构造函数、赋值运算符重载函数和析构函数，<strong>这些函数都是public且inline的。</strong></p>
+</li>
+<li><p>编译器生成的析构函数是<code>non-virtual</code>的，除非这个类的基类自身声明有<code>virtual</code>析构函数。</p>
+</li>
+<li><p>如果基类将赋值运算符重载函数声明为<code>private</code>的，即使用户未定义，编译器也拒绝为其派生类生成一个赋值运算符重载函数。</p>
+</li>
+<li><p>如果在一个<strong>内含reference成员或const成员</strong>的class内支持赋值操作，你必须自己定义赋值运算符重载函数。</p>
+</li>
+</ol>
+<h1 id="item6"><a href="#item6" class="headerlink" title="item6"></a>item6</h1><ol>
+<li><p>如果不想使用某些功能，且拒绝编译器默认生成这些功能（见item5），可以将相应的成员函数声明为<code>private</code>的且不予实现。</p>
+</li>
+<li><p>1中的做法并不绝对安全，因为类的成员函数和友元函数依旧可以调用<code>private</code>的函数。另一种做法是将需要限制的功能写成一个<code>base class</code>，然后让其他类私有继承它。例如：限制copy构造和赋值运算符重载，如下：</p>
+ <figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line"><span class="keyword">class</span> Uncopyable&#123;</div><div class="line"><span class="keyword">protected</span>:</div><div class="line">    Uncopyable();</div><div class="line">    ~Uncopyable();</div><div class="line"><span class="keyword">private</span>:</div><div class="line">    Uncopyable(<span class="keyword">const</span> Uncopyable&amp;);           </div><div class="line">    Uncopyable&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> Uncopyable&amp;);</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">class</span> TestClass: <span class="keyword">private</span> Uncopyable</div><div class="line">&#123;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    TestClass a;</div><div class="line">    <span class="function">TestClass <span class="title">b</span><span class="params">(a)</span></span>;    <span class="comment">//Error</span></div><div class="line">    TestClass c = a;   <span class="comment">//Error</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p> 条款55中有boost库的<code>noncopyable</code>的版本，可以学习一下。</p>
+</li>
+</ol>
+<h1 id="item7"><a href="#item7" class="headerlink" title="item7"></a>item7</h1><ol>
+<li><p>如果一个基类拥有任何<code>virtual</code>函数，那就应该为它定义一个<code>virtual</code>析构函数。原因: delete一个具有多态性质的基类指针是未定义的行为,这将导致派生类的析构函数无法正常调用。</p>
+</li>
+<li><p>如果具有多态性质的<code>class</code><strong>不会被作为基类使用</strong>，那么无需为它定义一个<code>virtual</code>的析构函数。</p>
+</li>
+</ol>
+<h1 id="item8"><a href="#item8" class="headerlink" title="item8"></a>item8</h1><ol>
+<li><p>析构函数中发生的异常不允许扩散出去，如果一个被析构函数调用的函数可能抛出异常，应当捕获异常并吞下他们（不扩散）或结束程序。</p>
+</li>
+<li><p>如果客户需要对某个操作函数运行期间抛出的异常做出反应，那么<code>class</code>应该提供一个普通函数（而非在析构函数中）执行该操作。</p>
 </li>
 </ol>
 <p>(陆续更新中)</p>
@@ -560,7 +600,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#导读"><span class="nav-number">1.</span> <span class="nav-text">导读</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#item1"><span class="nav-number">2.</span> <span class="nav-text">item1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#item2"><span class="nav-number">3.</span> <span class="nav-text">item2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#item3"><span class="nav-number">4.</span> <span class="nav-text">item3</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#item4"><span class="nav-number">5.</span> <span class="nav-text">item4</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#导读"><span class="nav-number">1.</span> <span class="nav-text">导读</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#item1"><span class="nav-number">2.</span> <span class="nav-text">item1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#item2"><span class="nav-number">3.</span> <span class="nav-text">item2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#item3"><span class="nav-number">4.</span> <span class="nav-text">item3</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#item4"><span class="nav-number">5.</span> <span class="nav-text">item4</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#item5"><span class="nav-number">6.</span> <span class="nav-text">item5</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#item6"><span class="nav-number">7.</span> <span class="nav-text">item6</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#item7"><span class="nav-number">8.</span> <span class="nav-text">item7</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#item8"><span class="nav-number">9.</span> <span class="nav-text">item8</span></a></li></ol></div>
             
 
           </div>

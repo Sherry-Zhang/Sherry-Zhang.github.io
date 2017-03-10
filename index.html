@@ -500,7 +500,7 @@
           <h1 id="导读"><a href="#导读" class="headerlink" title="导读"></a>导读</h1><ol>
 <li><p>应经常把构造函数声明为<code>explicit</code> 的，以避免发生非预期的隐式类型转换</p>
 </li>
-<li><p>注意copy构造函数和copy assignment适用场景的区别。</p>
+<li><p>注意 copy构造函数 和 赋值运算符重载函数（copy assignment）适用场景的区别。</p>
 </li>
 <li><p>函数调用时，传递参数用<code>pass-by-value</code>意味着调用copy构造函数。尽量以<code>Pass-by-reference-to-const</code>传递用户自定义类型的参数。</p>
 </li>
