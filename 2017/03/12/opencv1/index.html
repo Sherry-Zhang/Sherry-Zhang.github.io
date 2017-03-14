@@ -93,7 +93,8 @@
 <meta property="og:image" content="http://www.zshu.me/2017/03/12/opencv1/1.png">
 <meta property="og:image" content="http://www.zshu.me/2017/03/12/opencv1/property.jpg">
 <meta property="og:image" content="http://www.zshu.me/2017/03/12/opencv1/reverse.jpg">
-<meta property="og:updated_time" content="2017-03-12T12:34:59.000Z">
+<meta property="og:image" content="http://www.zshu.me/2017/03/12/opencv1/1.gif">
+<meta property="og:updated_time" content="2017-03-14T08:05:52.632Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="图像处理和opencv学习（一）">
 <meta name="twitter:description" content="本学期修了图像处理课程，相关概念太多，因此记录下自己的学习笔记和一些opencv的实践demo，方便以后用到了翻阅。">
@@ -392,16 +393,24 @@
 <ul>
 <li>第一个参数：滑块名称。</li>
 <li>第二个参数：需要添加滑块的窗口。</li>
-<li>第三个参数：整型指针，表示初始状态下滑块的位置。</li>
+<li>第三个参数：整型指针，表示滑块的位置，初值是其初始位置</li>
 <li>第四个参数：count, 表示滑块可以到达的最大位置的值(最小位置始终是0)</li>
 <li>第五个参数：回掉函数指针，每次滑块位置发生改变，此函数就会被调用。</li>
-<li>第六个参数：用户传给回调函数的数据，用来处理轨迹条事件。</li>
+<li>第六个参数：用户传给回调函数的数据，用来处理轨迹条事件。一般传入的是滑块位置和图像类。如果这些参数设为全局变量，则不用传参。</li>
 </ul>
 <h1 id="调整图像的亮度和对比度"><a href="#调整图像的亮度和对比度" class="headerlink" title="调整图像的亮度和对比度"></a>调整图像的亮度和对比度</h1><p>如果用$f(x,y)$ 表示原图像像素，$g(x,y)$ 表示调整后的图像像素，则图像的线性变换可以用下面的公式表示：<br>$$<br>g(x,y) = α×f(x,y)+β<br>$$<br>其中：</p>
 <ul>
 <li>$α$ 可以用来控制对比度。</li>
 <li>$β$ 可以用来控制亮度。</li>
 </ul>
+<h2 id="代码验证"><a href="#代码验证" class="headerlink" title="代码验证"></a>代码验证</h2><p>思路：</p>
+<p>我预想的亮度的变化范围在<code>(-200 ~ 200)</code>内，对比度的变化范围在<code>0~3倍</code>之间。设置初值和最大值为：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line"><span class="keyword">int</span> brightVal = <span class="number">200</span>;   <span class="comment">//亮度位置指针</span></div><div class="line"><span class="keyword">int</span> contrastVal = <span class="number">10</span>;   <span class="comment">//对比度位置指针</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxBrightVal = <span class="number">400</span>;   <span class="comment">//亮度最大位置</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxConVal = <span class="number">30</span>;       <span class="comment">//对比度最大位置</span></div></pre></td></tr></table></figure></p>
+<p>由于滑块的最小位置永远为0，因此为了使亮度和对比度在合理的区间内变化，修正公式为:<br>$$<br>g(x,y) = contrastVal × f(x,y) * 0.1 + brightVal - 200;<br>$$<br>另外，由于计算过程中可能导致结果超过(0~255)的范围，因此需要用<code>saturate_cast</code>强转控制边界点。</p>
+<p>创建两个滑块来调整亮度和对比度，用<code>bc_onChange()</code>回调处理。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line">createTrackbar(<span class="string">"亮度"</span>, windowName, &amp;brightVal, maxBrightVal, bc_onChange);</div><div class="line">createTrackbar(<span class="string">"对比度"</span>, windowName, &amp;contrastVal, maxConVal, bc_onChange);</div></pre></td></tr></table></figure>
+<p>完整代码如下：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2\opencv.hpp&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</div><div class="line"></div><div class="line"><span class="keyword">int</span> brightVal = <span class="number">200</span>;   <span class="comment">//亮度位置指针</span></div><div class="line"><span class="keyword">int</span> contrastVal = <span class="number">10</span>;   <span class="comment">//对比度位置指针</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxBrightVal = <span class="number">400</span>;   <span class="comment">//亮度最大位置</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxConVal = <span class="number">20</span>;       <span class="comment">//对比度最大位置</span></div><div class="line"></div><div class="line">Mat srcImg,dstImg;</div><div class="line"><span class="keyword">const</span> <span class="built_in">string</span> windowName = <span class="string">"亮度对比度调整效果"</span>;</div><div class="line"></div><div class="line"><span class="comment">//返回值为void</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">bc_onChange</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">void</span>*)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="function">Mat <span class="title">lut</span><span class="params">(<span class="number">1</span>, <span class="number">256</span>,CV_8U)</span></span>;     <span class="comment">//变换矩阵</span></div><div class="line">    <span class="keyword">auto</span> *p = lut.data;</div><div class="line">    <span class="comment">//bright - 50：为了使亮度范围在合理的范围内（-200~200）</span></div><div class="line">    <span class="comment">//constrast * 0.1 为了使对比度范围在合理的范围内（0~2倍）</span></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">255</span>; ++i)</div><div class="line">        p[i] = saturate_cast&lt;uchar&gt;(contrastVal * <span class="number">0.1</span> * i + brightVal - <span class="number">200</span>);   <span class="comment">//亮度对比度调整</span></div><div class="line">    LUT(srcImg, lut, dstImg);</div><div class="line">    imshow(windowName, dstImg);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    srcImg = imread(<span class="string">"cat.jpg"</span>);</div><div class="line">    dstImg = srcImg.clone();</div><div class="line">    imshow(<span class="string">"src"</span>, srcImg);</div><div class="line">    namedWindow(windowName, WINDOW_AUTOSIZE);      <span class="comment">//创建显示窗口</span></div><div class="line">    imshow(windowName, dstImg);                   <span class="comment">//不加这一行的话，初始显示效果为灰色</span></div><div class="line">    <span class="comment">//创建滑块</span></div><div class="line">    bc_onChange(<span class="number">0</span>,<span class="number">0</span>);                  </div><div class="line">    createTrackbar(<span class="string">"亮度"</span>, windowName, &amp;brightVal, maxBrightVal, bc_onChange);</div><div class="line">    createTrackbar(<span class="string">"对比度"</span>, windowName, &amp;contrastVal, maxConVal, bc_onChange);</div><div class="line"></div><div class="line">    waitKey(<span class="number">0</span>);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="调整效果"><a href="#调整效果" class="headerlink" title="调整效果"></a>调整效果</h2><p><img src="/2017/03/12/opencv1/1.gif" alt="亮度对比度调整效果"></p>
+<p>大致的效果就是这样了，不过我仍有一些疑惑的点，比如：我拿自己的结果和 Ps软件的调整效果相比，发现亮度部分比较合理，但是对比度部分Ps显示调低对比度会变成全灰，而我的效果是变成全黑色。此外感觉Ps的对比度变化比较饱满，因此我觉得可能我的公式调整还有问题，以后再尝试解决。另外一个问题：这张图是我从百度图片中随便挑的，不知道为何在调整过程中会出现荧光的斑点。如果有知道的朋友，可以交流一下哈。</p>
 
       
     </div>
@@ -546,6 +555,17 @@
 
         <div class="links-of-author motion-element">
           
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Sherry-Zhang" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
         </div>
 
         
@@ -569,7 +589,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#图像的表示"><span class="nav-number">1.</span> <span class="nav-text">图像的表示</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#图像的参数"><span class="nav-number">2.</span> <span class="nav-text">图像的参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#opencv学习之——mat类"><span class="nav-number">3.</span> <span class="nav-text">opencv学习之——mat类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个mat对象"><span class="nav-number">3.1.</span> <span class="nav-text">创建一个mat对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复制一个mat对象"><span class="nav-number">3.2.</span> <span class="nav-text">复制一个mat对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问mat对象中的元素"><span class="nav-number">3.3.</span> <span class="nav-text">访问mat对象中的元素</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#读入图片和显示图片"><span class="nav-number">4.</span> <span class="nav-text">读入图片和显示图片</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建滑块"><span class="nav-number">5.</span> <span class="nav-text">创建滑块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#调整图像的亮度和对比度"><span class="nav-number">6.</span> <span class="nav-text">调整图像的亮度和对比度</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#图像的表示"><span class="nav-number">1.</span> <span class="nav-text">图像的表示</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#图像的参数"><span class="nav-number">2.</span> <span class="nav-text">图像的参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#opencv学习之——mat类"><span class="nav-number">3.</span> <span class="nav-text">opencv学习之——mat类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个mat对象"><span class="nav-number">3.1.</span> <span class="nav-text">创建一个mat对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复制一个mat对象"><span class="nav-number">3.2.</span> <span class="nav-text">复制一个mat对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问mat对象中的元素"><span class="nav-number">3.3.</span> <span class="nav-text">访问mat对象中的元素</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#读入图片和显示图片"><span class="nav-number">4.</span> <span class="nav-text">读入图片和显示图片</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建滑块"><span class="nav-number">5.</span> <span class="nav-text">创建滑块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#调整图像的亮度和对比度"><span class="nav-number">6.</span> <span class="nav-text">调整图像的亮度和对比度</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#代码验证"><span class="nav-number">6.1.</span> <span class="nav-text">代码验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调整效果"><span class="nav-number">6.2.</span> <span class="nav-text">调整效果</span></a></li></ol></li></ol></div>
             
 
           </div>
