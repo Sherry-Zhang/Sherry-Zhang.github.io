@@ -1,0 +1,764 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="c++,opencv,图像处理," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/logo.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="图像增强的各种技术分类总结如下：本篇先对灰度变换做个总结。灰度变换是用新灰度 $g(x,y)$ 代替对应的旧灰度 $f(x,y)$ ，而新灰度与旧灰度的映射关系，根据相关模型 $T$ 确定。$$g(x,y) = T(f(x,y))$$常见的变换函数有线性变换(图像翻转、恒等变换)、对数变换、幂律变换（伽马变换）等。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图像处理和opencv学习（二）：灰度变换">
+<meta property="og:url" content="http://www.zshu.me/2017/03/17/opencv2/index.html">
+<meta property="og:site_name" content="点 线 面">
+<meta property="og:description" content="图像增强的各种技术分类总结如下：本篇先对灰度变换做个总结。灰度变换是用新灰度 $g(x,y)$ 代替对应的旧灰度 $f(x,y)$ ，而新灰度与旧灰度的映射关系，根据相关模型 $T$ 确定。$$g(x,y) = T(f(x,y))$$常见的变换函数有线性变换(图像翻转、恒等变换)、对数变换、幂律变换（伽马变换）等。">
+<meta property="og:image" content="http://www.zshu.me/2017/03/17/opencv2/1.svg">
+<meta property="og:image" content="http://www.zshu.me/2017/03/17/opencv2/1.jpg">
+<meta property="og:image" content="http://www.zshu.me/2017/03/17/opencv2/2.png">
+<meta property="og:image" content="http://www.zshu.me/2017/03/17/opencv2/bit.gif">
+<meta property="og:image" content="http://www.zshu.me/2017/03/17/opencv2/3.jpg">
+<meta property="og:image" content="http://www.zshu.me/2017/03/17/opencv2/log.gif">
+<meta property="og:image" content="http://www.zshu.me/2017/03/17/opencv2/gamma.gif">
+<meta property="og:updated_time" content="2017-03-17T07:21:17.205Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="图像处理和opencv学习（二）：灰度变换">
+<meta name="twitter:description" content="图像增强的各种技术分类总结如下：本篇先对灰度变换做个总结。灰度变换是用新灰度 $g(x,y)$ 代替对应的旧灰度 $f(x,y)$ ，而新灰度与旧灰度的映射关系，根据相关模型 $T$ 确定。$$g(x,y) = T(f(x,y))$$常见的变换函数有线性变换(图像翻转、恒等变换)、对数变换、幂律变换（伽马变换）等。">
+<meta name="twitter:image" content="http://www.zshu.me/2017/03/17/opencv2/1.svg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.zshu.me/2017/03/17/opencv2/"/>
+
+
+
+
+
+  <title> 图像处理和opencv学习（二）：灰度变换 | 点 线 面 </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">点 线 面</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle"></p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://www.zshu.me/2017/03/17/opencv2/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="ZhangShu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="点 线 面">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="点 线 面" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                图像处理和opencv学习（二）：灰度变换
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-17T13:31:24+08:00">
+                2017-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/图像处理/" itemprop="url" rel="index">
+                    <span itemprop="name">图像处理</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>图像增强的各种技术分类总结如下：<br><img src="/2017/03/17/opencv2/1.svg" alt=""><br>本篇先对灰度变换做个总结。灰度变换是用新灰度 $g(x,y)$ 代替对应的旧灰度 $f(x,y)$ ，而新灰度与旧灰度的映射关系，根据相关模型 $T$ 确定。<br>$$<br>g(x,y) = T(f(x,y))<br>$$<br>常见的变换函数有线性变换(图像翻转、恒等变换)、对数变换、幂律变换（伽马变换）等。<br><a id="more"></a></p>
+<h1 id="彩色图像的灰度化"><a href="#彩色图像的灰度化" class="headerlink" title="彩色图像的灰度化"></a>彩色图像的灰度化</h1><p>由彩色图像获得灰度图像有三种方式：</p>
+<ol>
+<li><p>在用imread()读入图像的时候，第二个参数置为<code>IMREAD_GRAYSCALE</code>，则读取的图像是单通道的灰度图像。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line">imread(<span class="string">"xxx.jpg"</span>, IMREAD_GRAYSCALE);</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用opencv的<code>cvtColor()</code>函数对彩色图像进行灰度化。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line">Mat colorImg = imread(<span class="string">"xxx.jpg"</span>);</div><div class="line">Mat greyImg;</div><div class="line">cvtColor(colorImg, greyImg, CV_RGB2GRAY );</div></pre></td></tr></table></figure>
+</li>
+<li><p>手动处理像素值。彩色图像灰度化的原理无非是任取R、G、B三个通道中的一个通道的灰度即可。因此完全可以手工处理。</p>
+<figure class="highlight"><table><tr><td class="code"><pre><div class="line">Mat colorImg = imread("xxx.jpg");</div><div class="line">Mat greyImg(colorImg.size(), CV_8U);</div><div class="line">for (int i = 0; i &lt; colorImg.rows; ++i)</div><div class="line">&#123;</div><div class="line">    for (int j = 0; j &lt; colorImg.cols; ++j)</div><div class="line">    &#123;</div><div class="line">        greyImg.at&lt;uchar&gt;(i, j) = colorImg.at&lt;Vec3b&gt;(i, j)[0];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><img src="/2017/03/17/opencv2/1.jpg" alt="1"></p>
+<h1 id="灰度图像的二值化"><a href="#灰度图像的二值化" class="headerlink" title="灰度图像的二值化"></a>灰度图像的二值化</h1><p>对8bit图像来说，二值化，就是将原本256个灰度级的图像，强制减少为只有全黑和全白两个灰度级。</p>
+<p>为什么要进行图像二值化呢？<br><br>二值化的过程是个图片信息丢失非常严重的过程，但是二值化图像<strong>处理速度非常快</strong>。二值化处理就是一个重要的前期图像处理。在很多识别领域，二值处理比较重要。可以区分前景背景，或者得到感兴趣部分，迅速获得图像特征等。一些重要的应用领域有：文档OCR，指纹识别等。</p>
+<p>图像二值化最重要的部分在于如何选取阈值<code>thresholdVal</code>，有许多不同的选取策略。得到阈值后的处理过程比较简单，以下演示一个不同阈值下图像二值化处理的结果，采用的图像是傅里叶频谱图：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2\opencv.hpp&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</div><div class="line"><span class="keyword">int</span> thresholdVal = <span class="number">128</span>;</div><div class="line">Mat srcImg, dstImg;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">onChange</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">void</span>*)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="function">Mat <span class="title">lut</span><span class="params">(<span class="number">1</span>, <span class="number">256</span>, CV_8U)</span></span>;      <span class="comment">//映射表</span></div><div class="line">    <span class="keyword">auto</span> *p = lut.data;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">256</span>; ++i)   <span class="comment">//对于临界点应当如何处理?</span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span> (i &gt;= thresholdVal)</div><div class="line">            p[i] = <span class="number">255</span>;</div><div class="line">        <span class="keyword">else</span></div><div class="line">            p[i] = <span class="number">0</span>;</div><div class="line">    &#125;</div><div class="line">    LUT(srcImg, lut, dstImg);   <span class="comment">//映射变换</span></div><div class="line">    imshow(<span class="string">"二值化"</span>, dstImg);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    srcImg = imread(<span class="string">"cat.jpg"</span>, IMREAD_GRAYSCALE);</div><div class="line">    namedWindow(<span class="string">"二值化"</span>,WINDOW_NORMAL);</div><div class="line">    createTrackbar(<span class="string">"阈值"</span>, <span class="string">"二值化"</span>, &amp;thresholdVal, <span class="number">255</span>, onChange);</div><div class="line">    waitKey(<span class="number">0</span>);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><img src="/2017/03/17/opencv2/2.png" alt="2"><br><img src="/2017/03/17/opencv2/bit.gif" alt="bit.gif"></p>
+<h1 id="灰度图像的对数变换"><a href="#灰度图像的对数变换" class="headerlink" title="灰度图像的对数变换"></a>灰度图像的对数变换</h1><p>DIP第三版的书上给出的对数变换公式为 $s=c×log(1+r)$，但是为了使当r在[0,1]区间变化时，s也在[0,1]区间变化，将公式调整如下：<br>$$<br>s=c×log_v(1+v×r)<br>$$<br><img src="/2017/03/17/opencv2/3.jpg" alt=""><br>可以看出对数变换的作用是拉伸图像的低灰度部分，强调图像的暗部细节。<br>实现对数变换的部分代码如下：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line"><span class="keyword">int</span> logVal = <span class="number">1</span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">log_onChange</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">void</span>*)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="function">Mat <span class="title">lut</span><span class="params">(<span class="number">1</span>, <span class="number">256</span>, CV_8U)</span></span>;</div><div class="line">    <span class="keyword">auto</span> *p = lut.data;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">256</span>; ++i)</div><div class="line">    &#123;</div><div class="line">        p[i] = saturate_cast&lt;uchar&gt;(<span class="built_in">log</span>(<span class="number">1</span> + logVal * i / <span class="number">255.0</span>) / <span class="built_in">log</span>(logVal + <span class="number">1.0</span>) * <span class="number">255</span>);</div><div class="line">    &#125;</div><div class="line">    LUT(srcImg, lut, dstImg);</div><div class="line">    imshow(<span class="string">"对数变换"</span>, dstImg);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><img src="/2017/03/17/opencv2/log.gif" alt=""></p>
+<h1 id="灰度图像的伽马变换"><a href="#灰度图像的伽马变换" class="headerlink" title="灰度图像的伽马变换"></a>灰度图像的伽马变换</h1><p>现实中伽马变换比对数变换应用的更广泛一点，伽马变换公式：<br>$$<br>s=c×r^γ<br>$$<br>伽马变换比对数变换灵活，它的作用是：</p>
+<ul>
+<li>当γ在(0,1)范围内时，拉伸图像的低灰度部分，提升暗部细节。</li>
+<li>当γ大于1时，拉伸图像的高灰度部分，提升亮部细节。</li>
+</ul>
+<p>伽马变换的部分代码实现如下：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">gamma_onChange</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">void</span>*)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="function">Mat <span class="title">lut</span><span class="params">(<span class="number">1</span>, <span class="number">256</span>, CV_8U)</span></span>;      <span class="comment">//映射表</span></div><div class="line">    <span class="keyword">auto</span> *p = lut.data;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">256</span>; ++i)</div><div class="line">    &#123;</div><div class="line">        <span class="comment">//为了取到合理的精度，因此对伽马值进行修正, 按照0.1的精度变化</span></div><div class="line">        p[i] = saturate_cast&lt;uchar&gt;(<span class="built_in">pow</span>(i / <span class="number">255.0</span>, gammaVal * <span class="number">0.1</span>) * <span class="number">255</span>);</div><div class="line">    &#125;</div><div class="line">    LUT(srcImg, lut, dstImg);   <span class="comment">//映射变换</span></div><div class="line">    imshow(<span class="string">"伽马变换"</span>, dstImg);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><img src="/2017/03/17/opencv2/gamma.gif" alt=""></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/c/" rel="tag"># c++</a>
+          
+            <a href="/tags/opencv/" rel="tag"># opencv</a>
+          
+            <a href="/tags/图像处理/" rel="tag"># 图像处理</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/12/opencv1/" rel="next" title="图像处理和opencv学习（一）">
+                <i class="fa fa-chevron-left"></i> 图像处理和opencv学习（一）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="ZhangShu" />
+          <p class="site-author-name" itemprop="name">ZhangShu</p>
+          <p class="site-description motion-element" itemprop="description">积跬步以致千里</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Sherry-Zhang" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#彩色图像的灰度化"><span class="nav-number">1.</span> <span class="nav-text">彩色图像的灰度化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#灰度图像的二值化"><span class="nav-number">2.</span> <span class="nav-text">灰度图像的二值化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#灰度图像的对数变换"><span class="nav-number">3.</span> <span class="nav-text">灰度图像的对数变换</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#灰度图像的伽马变换"><span class="nav-number">4.</span> <span class="nav-text">灰度图像的伽马变换</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhangShu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid="></script>
+      <!-- UY END -->
+  
+
+
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
