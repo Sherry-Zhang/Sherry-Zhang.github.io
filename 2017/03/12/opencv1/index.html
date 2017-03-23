@@ -354,8 +354,16 @@
       
         <p>本学期修了图像处理课程，相关概念太多，因此记录下自己的学习笔记和一些opencv的实践demo，方便以后用到了翻阅。<br><a id="more"></a></p>
 <h1 id="图像的表示"><a href="#图像的表示" class="headerlink" title="图像的表示"></a>图像的表示</h1><p>图像在计算机中以矩阵的形式表示。矩阵中每个元素的值表示这个位置上的像素的亮度。如图所示：<br><img src="/2017/03/12/opencv1/1.png" alt="图像在计算机中的表示"></p>
-<p>在数学上表示为二维函数$f(x,y)$，其中$x,y$为空间坐标，$f(x,y)$为亮度。例如：一个3×3的图像可以表示为：<br>$$<br>f(x,y) =<br>  \left[<br>  \begin{matrix}<br>   f(0,0) &amp; f(0,1)&amp; f(0,2) \\<br>   f(1,0) &amp; f(1,1)&amp; f(1,2) \\<br>   f(2,0) &amp; f(2,1)&amp; f(2,2)<br>  \end{matrix}<br>  \right]<br>$$</p>
-<h1 id="图像的参数"><a href="#图像的参数" class="headerlink" title="图像的参数"></a>图像的参数</h1><p>以上述猫咪图像为例，它的主要参数有：<br><br><img src="/2017/03/12/opencv1/property.jpg" alt="图像的属性"></p>
+<p>在数学上表示为二维函数$f(x,y)$，其中$x,y$为空间坐标，$f(x,y)$为亮度。例如：一个3×3的图像可以表示为：</p>
+<script type="math/tex; mode=display">
+f(x,y) =
+  \left[
+  \begin{matrix}
+   f(0,0) & f(0,1)& f(0,2) \\\
+   f(1,0) & f(1,1)& f(1,2) \\\
+   f(2,0) & f(2,1)& f(2,2)
+  \end{matrix}
+  \right]</script><h1 id="图像的参数"><a href="#图像的参数" class="headerlink" title="图像的参数"></a>图像的参数</h1><p>以上述猫咪图像为例，它的主要参数有：<br><br><img src="/2017/03/12/opencv1/property.jpg" alt="图像的属性"></p>
 <p>其中：</p>
 <ul>
 <li>分辨率：表示图像长宽方向上的像素数量。</li>
@@ -398,14 +406,18 @@
 <li>第五个参数：回掉函数指针，每次滑块位置发生改变，此函数就会被调用。</li>
 <li>第六个参数：用户传给回调函数的数据，用来处理轨迹条事件。一般传入的是滑块位置和图像类。如果这些参数设为全局变量，则不用传参。</li>
 </ul>
-<h1 id="调整图像的亮度和对比度"><a href="#调整图像的亮度和对比度" class="headerlink" title="调整图像的亮度和对比度"></a>调整图像的亮度和对比度</h1><p>如果用$f(x,y)$ 表示原图像像素，$g(x,y)$ 表示调整后的图像像素，则图像的线性变换可以用下面的公式表示：<br>$$<br>g(x,y) = α×f(x,y)+β<br>$$<br>其中：</p>
+<h1 id="调整图像的亮度和对比度"><a href="#调整图像的亮度和对比度" class="headerlink" title="调整图像的亮度和对比度"></a>调整图像的亮度和对比度</h1><p>如果用$f(x,y)$ 表示原图像像素，$g(x,y)$ 表示调整后的图像像素，则图像的线性变换可以用下面的公式表示：</p>
+<script type="math/tex; mode=display">
+g(x,y) = α×f(x,y)+β</script><p>其中：</p>
 <ul>
 <li>$α$ 可以用来控制对比度。</li>
 <li>$β$ 可以用来控制亮度。</li>
 </ul>
 <h2 id="代码验证"><a href="#代码验证" class="headerlink" title="代码验证"></a>代码验证</h2><p>思路：</p>
 <p>我预想的亮度的变化范围在<code>(-200 ~ 200)</code>内，对比度的变化范围在<code>0~3倍</code>之间。设置初值和最大值为：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line"><span class="keyword">int</span> brightVal = <span class="number">200</span>;   <span class="comment">//亮度位置指针</span></div><div class="line"><span class="keyword">int</span> contrastVal = <span class="number">10</span>;   <span class="comment">//对比度位置指针</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxBrightVal = <span class="number">400</span>;   <span class="comment">//亮度最大位置</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxConVal = <span class="number">30</span>;       <span class="comment">//对比度最大位置</span></div></pre></td></tr></table></figure></p>
-<p>由于滑块的最小位置永远为0，因此为了使亮度和对比度在合理的区间内变化，修正公式为:<br>$$<br>g(x,y) = contrastVal × f(x,y) * 0.1 + brightVal - 200;<br>$$<br>另外，由于计算过程中可能导致结果超过(0~255)的范围，因此需要用<code>saturate_cast</code>强转控制边界点。</p>
+<p>由于滑块的最小位置永远为0，因此为了使亮度和对比度在合理的区间内变化，修正公式为:</p>
+<script type="math/tex; mode=display">
+g(x,y) = contrastVal × f(x,y) * 0.1 + brightVal - 200;</script><p>另外，由于计算过程中可能导致结果超过(0~255)的范围，因此需要用<code>saturate_cast</code>强转控制边界点。</p>
 <p>创建两个滑块来调整亮度和对比度，用<code>bc_onChange()</code>回调处理。</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line">createTrackbar(<span class="string">"亮度"</span>, windowName, &amp;brightVal, maxBrightVal, bc_onChange);</div><div class="line">createTrackbar(<span class="string">"对比度"</span>, windowName, &amp;contrastVal, maxConVal, bc_onChange);</div></pre></td></tr></table></figure>
 <p>完整代码如下：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2\opencv.hpp&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</div><div class="line"></div><div class="line"><span class="keyword">int</span> brightVal = <span class="number">200</span>;   <span class="comment">//亮度位置指针</span></div><div class="line"><span class="keyword">int</span> contrastVal = <span class="number">10</span>;   <span class="comment">//对比度位置指针</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxBrightVal = <span class="number">400</span>;   <span class="comment">//亮度最大位置</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxConVal = <span class="number">20</span>;       <span class="comment">//对比度最大位置</span></div><div class="line"></div><div class="line">Mat srcImg,dstImg;</div><div class="line"><span class="keyword">const</span> <span class="built_in">string</span> windowName = <span class="string">"亮度对比度调整效果"</span>;</div><div class="line"></div><div class="line"><span class="comment">//返回值为void</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">bc_onChange</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">void</span>*)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="function">Mat <span class="title">lut</span><span class="params">(<span class="number">1</span>, <span class="number">256</span>,CV_8U)</span></span>;     <span class="comment">//变换矩阵</span></div><div class="line">    <span class="keyword">auto</span> *p = lut.data;</div><div class="line">    <span class="comment">//bright - 50：为了使亮度范围在合理的范围内（-200~200）</span></div><div class="line">    <span class="comment">//constrast * 0.1 为了使对比度范围在合理的范围内（0~2倍）</span></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">255</span>; ++i)</div><div class="line">        p[i] = saturate_cast&lt;uchar&gt;(contrastVal * <span class="number">0.1</span> * i + brightVal - <span class="number">200</span>);   <span class="comment">//亮度对比度调整</span></div><div class="line">    LUT(srcImg, lut, dstImg);</div><div class="line">    imshow(windowName, dstImg);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    srcImg = imread(<span class="string">"cat.jpg"</span>);</div><div class="line">    dstImg = srcImg.clone();</div><div class="line">    imshow(<span class="string">"src"</span>, srcImg);</div><div class="line">    namedWindow(windowName, WINDOW_AUTOSIZE);      <span class="comment">//创建显示窗口</span></div><div class="line">    imshow(windowName, dstImg);                   <span class="comment">//不加这一行的话，初始显示效果为灰色</span></div><div class="line">    <span class="comment">//创建滑块</span></div><div class="line">    bc_onChange(<span class="number">0</span>,<span class="number">0</span>);                  </div><div class="line">    createTrackbar(<span class="string">"亮度"</span>, windowName, &amp;brightVal, maxBrightVal, bc_onChange);</div><div class="line">    createTrackbar(<span class="string">"对比度"</span>, windowName, &amp;contrastVal, maxConVal, bc_onChange);</div><div class="line"></div><div class="line">    waitKey(<span class="number">0</span>);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>

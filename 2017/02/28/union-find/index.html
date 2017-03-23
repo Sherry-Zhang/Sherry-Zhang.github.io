@@ -361,7 +361,7 @@
 <p>以这种父亲关系来表示元素所属的集合，图示如下：<br><img src="/2017/02/28/union-find/1.jpg" alt="1.并查集的表示"></p>
 <p>如果<code>pre[i] == i</code>,说明元素i为该集合的根节点，同时也是<strong>所属集合的标识</strong> 。</p>
 <h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>一开始的每个元素都是独立的集合。<br><figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; ++i)</div><div class="line">    pre[i] = i;</div></pre></td></tr></table></figure></p>
-<h1 id="find操作"><a href="#find操作" class="headerlink" title="find操作"></a>find操作</h1><p><strong>思路:</strong>判断两个元素是否在同一个集合 —-&gt; 判断两个元素是否在一棵树上 —-&gt; 判断两个元素所在树的根节点是否相等。</p>
+<h1 id="find操作"><a href="#find操作" class="headerlink" title="find操作"></a>find操作</h1><p><strong>思路:</strong>判断两个元素是否在同一个集合 ——&gt; 判断两个元素是否在一棵树上 ——&gt; 判断两个元素所在树的根节点是否相等。</p>
 <p>接下来就是如何查找元素的集合的根节点的问题了，这个也很简单，反复寻找父节点直至<code>pre[i] == i</code>即可。<br><figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">while</span>(pre[x] != x)</div><div class="line">        x = pre[x];</div><div class="line">    <span class="keyword">return</span> x;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h1 id="union操作"><a href="#union操作" class="headerlink" title="union操作"></a>union操作</h1><p>合并元素a和元素b所在的集合。</p>
 <p>思路：</p>

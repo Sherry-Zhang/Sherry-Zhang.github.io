@@ -84,12 +84,16 @@
 
 
 
-<meta name="description" content="图像增强的各种技术分类总结如下：本篇先对灰度变换做个总结。灰度变换是用新灰度 $g(x,y)$ 代替对应的旧灰度 $f(x,y)$ ，而新灰度与旧灰度的映射关系，根据相关模型 $T$ 确定。$$g(x,y) = T(f(x,y))$$常见的变换函数有线性变换(图像翻转、恒等变换)、对数变换、幂律变换（伽马变换）等。">
+<meta name="description" content="图像增强的各种技术分类总结如下：本篇先对灰度变换做个总结。灰度变换是用新灰度 $g(x,y)$ 代替对应的旧灰度 $f(x,y)$ ，而新灰度与旧灰度的映射关系，根据相关模型 $T$ 确定。
+
+g(x,y) = T(f(x,y))常见的变换函数有线性变换(图像翻转、恒等变换)、对数变换、幂律变换（伽马变换）等。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="图像处理和opencv学习（二）：灰度变换">
 <meta property="og:url" content="http://www.zshu.me/2017/03/17/opencv2/index.html">
 <meta property="og:site_name" content="点 线 面">
-<meta property="og:description" content="图像增强的各种技术分类总结如下：本篇先对灰度变换做个总结。灰度变换是用新灰度 $g(x,y)$ 代替对应的旧灰度 $f(x,y)$ ，而新灰度与旧灰度的映射关系，根据相关模型 $T$ 确定。$$g(x,y) = T(f(x,y))$$常见的变换函数有线性变换(图像翻转、恒等变换)、对数变换、幂律变换（伽马变换）等。">
+<meta property="og:description" content="图像增强的各种技术分类总结如下：本篇先对灰度变换做个总结。灰度变换是用新灰度 $g(x,y)$ 代替对应的旧灰度 $f(x,y)$ ，而新灰度与旧灰度的映射关系，根据相关模型 $T$ 确定。
+
+g(x,y) = T(f(x,y))常见的变换函数有线性变换(图像翻转、恒等变换)、对数变换、幂律变换（伽马变换）等。">
 <meta property="og:image" content="http://www.zshu.me/2017/03/17/opencv2/1.svg">
 <meta property="og:image" content="http://www.zshu.me/2017/03/17/opencv2/1.jpg">
 <meta property="og:image" content="http://www.zshu.me/2017/03/17/opencv2/2.png">
@@ -100,7 +104,9 @@
 <meta property="og:updated_time" content="2017-03-17T07:21:17.205Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="图像处理和opencv学习（二）：灰度变换">
-<meta name="twitter:description" content="图像增强的各种技术分类总结如下：本篇先对灰度变换做个总结。灰度变换是用新灰度 $g(x,y)$ 代替对应的旧灰度 $f(x,y)$ ，而新灰度与旧灰度的映射关系，根据相关模型 $T$ 确定。$$g(x,y) = T(f(x,y))$$常见的变换函数有线性变换(图像翻转、恒等变换)、对数变换、幂律变换（伽马变换）等。">
+<meta name="twitter:description" content="图像增强的各种技术分类总结如下：本篇先对灰度变换做个总结。灰度变换是用新灰度 $g(x,y)$ 代替对应的旧灰度 $f(x,y)$ ，而新灰度与旧灰度的映射关系，根据相关模型 $T$ 确定。
+
+g(x,y) = T(f(x,y))常见的变换函数有线性变换(图像翻转、恒等变换)、对数变换、幂律变换（伽马变换）等。">
 <meta name="twitter:image" content="http://www.zshu.me/2017/03/17/opencv2/1.svg">
 
 
@@ -355,7 +361,9 @@
       
 
       
-        <p>图像增强的各种技术分类总结如下：<br><img src="/2017/03/17/opencv2/1.svg" alt=""><br>本篇先对灰度变换做个总结。灰度变换是用新灰度 $g(x,y)$ 代替对应的旧灰度 $f(x,y)$ ，而新灰度与旧灰度的映射关系，根据相关模型 $T$ 确定。<br>$$<br>g(x,y) = T(f(x,y))<br>$$<br>常见的变换函数有线性变换(图像翻转、恒等变换)、对数变换、幂律变换（伽马变换）等。<br><a id="more"></a></p>
+        <p>图像增强的各种技术分类总结如下：<br><img src="/2017/03/17/opencv2/1.svg" alt=""><br>本篇先对灰度变换做个总结。灰度变换是用新灰度 $g(x,y)$ 代替对应的旧灰度 $f(x,y)$ ，而新灰度与旧灰度的映射关系，根据相关模型 $T$ 确定。</p>
+<script type="math/tex; mode=display">
+g(x,y) = T(f(x,y))</script><p>常见的变换函数有线性变换(图像翻转、恒等变换)、对数变换、幂律变换（伽马变换）等。<br><a id="more"></a></p>
 <h1 id="彩色图像的灰度化"><a href="#彩色图像的灰度化" class="headerlink" title="彩色图像的灰度化"></a>彩色图像的灰度化</h1><p>由彩色图像获得灰度图像有三种方式：</p>
 <ol>
 <li><p>在用imread()读入图像的时候，第二个参数置为<code>IMREAD_GRAYSCALE</code>，则读取的图像是单通道的灰度图像。</p>
@@ -373,9 +381,13 @@
 <p>为什么要进行图像二值化呢？<br><br>二值化的过程是个图片信息丢失非常严重的过程，但是二值化图像<strong>处理速度非常快</strong>。二值化处理就是一个重要的前期图像处理。在很多识别领域，二值处理比较重要。可以区分前景背景，或者得到感兴趣部分，迅速获得图像特征等。一些重要的应用领域有：文档OCR，指纹识别等。</p>
 <p>图像二值化最重要的部分在于如何选取阈值<code>thresholdVal</code>，有许多不同的选取策略。得到阈值后的处理过程比较简单，以下演示一个不同阈值下图像二值化处理的结果，采用的图像是傅里叶频谱图：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2\opencv.hpp&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</div><div class="line"><span class="keyword">int</span> thresholdVal = <span class="number">128</span>;</div><div class="line">Mat srcImg, dstImg;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">onChange</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">void</span>*)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="function">Mat <span class="title">lut</span><span class="params">(<span class="number">1</span>, <span class="number">256</span>, CV_8U)</span></span>;      <span class="comment">//映射表</span></div><div class="line">    <span class="keyword">auto</span> *p = lut.data;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">256</span>; ++i)   <span class="comment">//对于临界点应当如何处理?</span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span> (i &gt;= thresholdVal)</div><div class="line">            p[i] = <span class="number">255</span>;</div><div class="line">        <span class="keyword">else</span></div><div class="line">            p[i] = <span class="number">0</span>;</div><div class="line">    &#125;</div><div class="line">    LUT(srcImg, lut, dstImg);   <span class="comment">//映射变换</span></div><div class="line">    imshow(<span class="string">"二值化"</span>, dstImg);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    srcImg = imread(<span class="string">"cat.jpg"</span>, IMREAD_GRAYSCALE);</div><div class="line">    namedWindow(<span class="string">"二值化"</span>,WINDOW_NORMAL);</div><div class="line">    createTrackbar(<span class="string">"阈值"</span>, <span class="string">"二值化"</span>, &amp;thresholdVal, <span class="number">255</span>, onChange);</div><div class="line">    waitKey(<span class="number">0</span>);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p><img src="/2017/03/17/opencv2/2.png" alt="2"><br><img src="/2017/03/17/opencv2/bit.gif" alt="bit.gif"></p>
-<h1 id="灰度图像的对数变换"><a href="#灰度图像的对数变换" class="headerlink" title="灰度图像的对数变换"></a>灰度图像的对数变换</h1><p>DIP第三版的书上给出的对数变换公式为 $s=c×log(1+r)$，但是为了使当r在[0,1]区间变化时，s也在[0,1]区间变化，将公式调整如下：<br>$$<br>s=c×log_v(1+v×r)<br>$$<br><img src="/2017/03/17/opencv2/3.jpg" alt=""><br>可以看出对数变换的作用是拉伸图像的低灰度部分，强调图像的暗部细节。<br>实现对数变换的部分代码如下：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line"><span class="keyword">int</span> logVal = <span class="number">1</span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">log_onChange</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">void</span>*)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="function">Mat <span class="title">lut</span><span class="params">(<span class="number">1</span>, <span class="number">256</span>, CV_8U)</span></span>;</div><div class="line">    <span class="keyword">auto</span> *p = lut.data;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">256</span>; ++i)</div><div class="line">    &#123;</div><div class="line">        p[i] = saturate_cast&lt;uchar&gt;(<span class="built_in">log</span>(<span class="number">1</span> + logVal * i / <span class="number">255.0</span>) / <span class="built_in">log</span>(logVal + <span class="number">1.0</span>) * <span class="number">255</span>);</div><div class="line">    &#125;</div><div class="line">    LUT(srcImg, lut, dstImg);</div><div class="line">    imshow(<span class="string">"对数变换"</span>, dstImg);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h1 id="灰度图像的对数变换"><a href="#灰度图像的对数变换" class="headerlink" title="灰度图像的对数变换"></a>灰度图像的对数变换</h1><p>DIP第三版的书上给出的对数变换公式为 $s=c×log(1+r)$，但是为了使当r在[0,1]区间变化时，s也在[0,1]区间变化，将公式调整如下：</p>
+<script type="math/tex; mode=display">
+s=c×log_v(1+v×r)</script><p><img src="/2017/03/17/opencv2/3.jpg" alt=""><br>可以看出对数变换的作用是拉伸图像的低灰度部分，强调图像的暗部细节。<br>实现对数变换的部分代码如下：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line"><span class="keyword">int</span> logVal = <span class="number">1</span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">log_onChange</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">void</span>*)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="function">Mat <span class="title">lut</span><span class="params">(<span class="number">1</span>, <span class="number">256</span>, CV_8U)</span></span>;</div><div class="line">    <span class="keyword">auto</span> *p = lut.data;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">256</span>; ++i)</div><div class="line">    &#123;</div><div class="line">        p[i] = saturate_cast&lt;uchar&gt;(<span class="built_in">log</span>(<span class="number">1</span> + logVal * i / <span class="number">255.0</span>) / <span class="built_in">log</span>(logVal + <span class="number">1.0</span>) * <span class="number">255</span>);</div><div class="line">    &#125;</div><div class="line">    LUT(srcImg, lut, dstImg);</div><div class="line">    imshow(<span class="string">"对数变换"</span>, dstImg);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p><img src="/2017/03/17/opencv2/log.gif" alt=""></p>
-<h1 id="灰度图像的伽马变换"><a href="#灰度图像的伽马变换" class="headerlink" title="灰度图像的伽马变换"></a>灰度图像的伽马变换</h1><p>现实中伽马变换比对数变换应用的更广泛一点，伽马变换公式：<br>$$<br>s=c×r^γ<br>$$<br>伽马变换比对数变换灵活，它的作用是：</p>
+<h1 id="灰度图像的伽马变换"><a href="#灰度图像的伽马变换" class="headerlink" title="灰度图像的伽马变换"></a>灰度图像的伽马变换</h1><p>现实中伽马变换比对数变换应用的更广泛一点，伽马变换公式：</p>
+<script type="math/tex; mode=display">
+s=c×r^γ</script><p>伽马变换比对数变换灵活，它的作用是：</p>
 <ul>
 <li>当γ在(0,1)范围内时，拉伸图像的低灰度部分，提升暗部细节。</li>
 <li>当γ大于1时，拉伸图像的高灰度部分，提升亮部细节。</li>

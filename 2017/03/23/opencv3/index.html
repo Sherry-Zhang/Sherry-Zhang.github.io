@@ -106,7 +106,9 @@ $n_k$：图像中灰度为 $r_k$的像素个数。
 归一化直方图：实践中经常">
 <meta property="og:image" content="http://www.zshu.me/2017/03/23/opencv3/1.jpg">
 <meta property="og:image" content="http://www.zshu.me/2017/03/23/opencv3/2.jpg">
-<meta property="og:updated_time" content="2017-03-23T08:40:56.244Z">
+<meta property="og:image" content="http://www.zshu.me/2017/03/23/opencv3/3.jpg">
+<meta property="og:image" content="http://www.zshu.me/2017/03/23/opencv3/4.jpg">
+<meta property="og:updated_time" content="2017-03-23T10:12:14.659Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="图像处理和opencv学习（三）：直方图表示和均衡">
 <meta name="twitter:description" content="概念图像直方图是一个反映图像像素分布的统计表。横坐标代表了图像像素的种类，可以是灰度的，也可以是彩色的。纵坐标代表了每一种颜色值在图像中的像素总数。数学上的表示为: 灰度级范围为 $[0,L-1]$ 的数字图像的直方图为：
@@ -378,18 +380,17 @@ h(r_k)=n_k</script><p>其中：</p>
 <li>$r_k$：第k级的灰度值，k = 0, 1, 2, …, L-1</li>
 <li>$n_k$：图像中灰度为 $r_k$的像素个数。</li>
 </ul>
-<p>归一化直方图：<br><br>实践中经常用乘积MN表示图像像素的总数，通常M和N为图像的行和列的维数。归一化的直方图表示为：</p>
+<p><strong>归一化直方图：</strong>实践中经常用乘积MN表示图像像素的总数，通常M和N为图像的行和列的维数。归一化的直方图表示为：</p>
 <script type="math/tex; mode=display">
-p(r_k)=n_k/MN</script><p>$p_k$是灰度级$r_k$在图像中出现概率的一个估计。归一化直方图的所有分量之和应等于1。</p>
-<p>实际工程中，图像直方图在特征提取、图像匹配等方面都有很好的应用。<br><a id="more"></a></p>
+p(r_k)=n_k/MN</script><p>$p_k$是灰度级$r_k$在图像中出现概率的一个估计。归一化直方图的所有分量之和应等于1。<br><br>实际工程中，图像直方图在特征提取、图像匹配等方面都有很好的应用。<br><a id="more"></a></p>
 <h1 id="直方图显示"><a href="#直方图显示" class="headerlink" title="直方图显示"></a>直方图显示</h1><p>以8比特图像为例：</p>
 <h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><ol>
 <li>遍历图像中每个元素，计算每个灰度级在图像中的像素个数，并用一个数组<code>count[256]</code>保存。</li>
-<li>绘制柱状图。新建一个Mat对象，用画图函数<code>line()</code>来绘制直线。需要注意控制纵轴的高度。<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight"><table><tr><td class="code"><pre><div class="line">void showHist(Mat srcImg)</div><div class="line">&#123;</div><div class="line">    int count[256] = &#123;&#125;;   //每个灰度级在图像中的像素个数</div><div class="line">    int maxVal = 0;     //像素个数最多的灰度级</div><div class="line">    for (int i = 0; i &lt; srcImg.rows; ++i)</div><div class="line">    &#123;</div><div class="line">        for (int j = 0; j &lt; srcImg.cols; ++j)</div><div class="line">        &#123;</div><div class="line">            int pix = srcImg.at&lt;uchar&gt;(i, j);</div><div class="line">            ++count[pix];</div><div class="line">            if (count[pix] &gt; maxVal)</div><div class="line">                maxVal = count[pix];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    //直方图可视化</div><div class="line">    MatND dstHist(256, 256, CV_8U, Scalar::all(255));   //创建全白图像(画布)</div><div class="line">    //设置直线最高点为画布纵轴的0.9</div><div class="line">    double hpt = 256 * 0.9;</div><div class="line">    for (int i = 0; i &lt; 255; ++i)</div><div class="line">    &#123;</div><div class="line">        Point start(i, 255);                         </div><div class="line">        Point end(i, 255 -  1.0 * count[i] / maxVal * hpt);</div><div class="line">        line(dstHist, start, end, Scalar::all(0));    </div><div class="line">    &#125;</div><div class="line">    imshow("hist", dstHist);</div><div class="line">    waitKey(0);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
+<li>绘制柱状图。新建一个Mat对象，用画图函数<code>line()</code>来绘制直线。需要注意控制纵轴的高度。</li>
 </ol>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight"><table><tr><td class="code"><pre><div class="line">void showHist(Mat srcImg)</div><div class="line">&#123;</div><div class="line">    int count[256] = &#123;&#125;;   //每个灰度级在图像中的像素个数</div><div class="line">    int maxVal = 0;     //像素个数最多的灰度级</div><div class="line">    for (int i = 0; i &lt; srcImg.rows; ++i)</div><div class="line">    &#123;</div><div class="line">        for (int j = 0; j &lt; srcImg.cols; ++j)</div><div class="line">        &#123;</div><div class="line">            int pix = srcImg.at&lt;uchar&gt;(i, j);</div><div class="line">            ++count[pix];</div><div class="line">            if (count[pix] &gt; maxVal)</div><div class="line">                maxVal = count[pix];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    //直方图可视化</div><div class="line">    MatND dstHist(256, 256, CV_8U, Scalar::all(255));   //创建全白图像(画布)</div><div class="line">    //设置直线最高点为画布纵轴的0.9</div><div class="line">    double hpt = 256 * 0.9;</div><div class="line">    for (int i = 0; i &lt; 255; ++i)</div><div class="line">    &#123;</div><div class="line">        Point start(i, 255);                         </div><div class="line">        Point end(i, 255 -  1.0 * count[i] / maxVal * hpt);</div><div class="line">        line(dstHist, start, end, Scalar::all(0));    </div><div class="line">    &#125;</div><div class="line">    imshow("hist", dstHist);</div><div class="line">    waitKey(0);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>效果如下所示：<br><br><img src="/2017/03/23/opencv3/1.jpg" alt=""><br><img src="/2017/03/23/opencv3/2.jpg" alt=""></p>
-<h2 id="opencv给的接口"><a href="#opencv给的接口" class="headerlink" title="opencv给的接口"></a>opencv给的接口</h2><p>OpenCV中计算图像直方图像函数是calcHist，支持高达 32 维的直方图。它的原型如下：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">calcHist</span><span class="params">(<span class="keyword">const</span> Mat* images, <span class="keyword">int</span> nimages, <span class="keyword">const</span> <span class="keyword">int</span>* channels, InputArray mask, OutputArray hist, <span class="keyword">int</span> dims, <span class="keyword">const</span> <span class="keyword">int</span>* histSize, <span class="keyword">const</span> <span class="keyword">float</span>** ranges, <span class="keyword">bool</span> uniform=<span class="literal">true</span>, <span class="keyword">bool</span> accumulate=<span class="literal">false</span> )</span></span></div></pre></td></tr></table></figure></p>
+<h2 id="opencv接口"><a href="#opencv接口" class="headerlink" title="opencv接口"></a>opencv接口</h2><p>OpenCV中计算图像直方图像函数是<code>calcHist()</code>，支持高达 32 维的直方图。它的原型如下：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">calcHist</span><span class="params">(<span class="keyword">const</span> Mat* images, <span class="keyword">int</span> nimages, <span class="keyword">const</span> <span class="keyword">int</span>* channels,</span></span></div><div class="line">    InputArray mask,OutputArray hist, <span class="keyword">int</span> dims, <span class="keyword">const</span> <span class="keyword">int</span>* histSize,</div><div class="line">    <span class="keyword">const</span> <span class="keyword">float</span>** ranges, <span class="keyword">bool</span> uniform=<span class="literal">true</span>, <span class="keyword">bool</span> accumulate=<span class="literal">false</span> )</div></pre></td></tr></table></figure></p>
 <ol>
 <li><code>const Mat* images</code>：源图像指针</li>
 <li><code>int nimages</code>：源图像个数，一般为单图像，<code>nimages = 1</code></li>
@@ -414,8 +415,7 @@ p(r_k)=n_k/MN</script><p>$p_k$是灰度级$r_k$在图像中出现概率的一个
 <p>这种方式依旧只是计算出了直方图，并不能直接显示，如果要以柱状图显示，需要自己写可视化代码，类似于上面手动绘制的操作。</p>
 <h1 id="直方图均衡化-histogram-equalization"><a href="#直方图均衡化-histogram-equalization" class="headerlink" title="直方图均衡化(histogram equalization)"></a>直方图均衡化(histogram equalization)</h1><p>直方图均衡来自于一个结论：<strong>若一幅图像的像素倾向占据整个灰度范围并均匀分布，则视觉感官最好。</strong> 因此直方图均衡可以有效改善图像质量。</p>
 <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>直方图均衡的目的是为了使原本的直方图概率分布变换为均匀分布。<br>连续图像的概率分布函数为：</p>
-<script type="math/tex; mode=display">
-\int_{r_{min}}^{r_{max}}{P(r)}\,{\rm d}r=1</script><ul>
+<script type="math/tex; mode=display">\int_{r_{min}}^{r_{max}}{P(r)}\,{\rm d}r = 1</script><ul>
 <li>$r$ ：灰度，$0 \leq r \leq L-1$</li>
 </ul>
 <p>(具体的变换的概率理论以后总结，先给出结论)</p>
@@ -423,11 +423,18 @@ p(r_k)=n_k/MN</script><p>$p_k$是灰度级$r_k$在图像中出现概率的一个
 <script type="math/tex; mode=display">
 s_k = T(r_k) = (L-1)\sum_{j=0}^kp_r(r_j) =\frac {L-1}{MN}\sum_{j=0}^kn_j</script><ul>
 <li>$n_k$: 是图像中灰度级为k的概率。</li>
-<li>$L$：是灰度级总数，例如8bit图像中L为256。</li>
+<li>$L$：是灰度级总数，例如8bit图像中L为256</li>
 </ul>
-<h2 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h2><figure class="highlight"><table><tr><td class="code"><pre><div class="line">Mat eqImg(srcImg.size(), srcImg.type());</div><div class="line">Mat lut(1, 256, CV_8U);</div><div class="line">auto *p = lut.data;</div><div class="line">int sum = 0;</div><div class="line">int mn = srcImg.cols * srcImg.rows;</div><div class="line">//直方图均衡</div><div class="line">for (int i = 0; i &lt; 256; ++i)</div><div class="line">&#123;</div><div class="line">    //count数组中保存了各灰度级在图像的像素数，在求直方图的过程中得出</div><div class="line">    sum += count[i];    ////sum即灰度像素数的累加</div><div class="line">    p[i] = saturate_cast&lt;uchar&gt;(255.0 * sum / mn);</div><div class="line">&#125;</div><div class="line">LUT(srcImg, lut, eqImg);</div></pre></td></tr></table></figure>
-<h2 id="opencv接口"><a href="#opencv接口" class="headerlink" title="opencv接口"></a>opencv接口</h2><p>opencv提供了一个方便的用于直方图均衡的接口函数。</p>
-<p>（未完待续）</p>
+<p>直方图均衡化步骤：</p>
+<ol>
+<li>计算输入图像的直方图H</li>
+<li>进行直方图归一化</li>
+<li>计算直方图积分 $H^1(i) = \sum{H(i)}$</li>
+<li>以$H^1$ 为查询表进行图像变换：$dst(x,y) = H^1[src(x,y)]$</li>
+</ol>
+<h2 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h2><figure class="highlight"><table><tr><td class="code"><pre><div class="line">Mat eqImg(srcImg.size(), srcImg.type());</div><div class="line">Mat lut(1, 256, CV_8U);</div><div class="line">auto *p = lut.data;</div><div class="line">int sum = 0;</div><div class="line">int mn = srcImg.cols * srcImg.rows;</div><div class="line">//直方图均衡</div><div class="line">for (int i = 0; i &lt; 256; ++i)</div><div class="line">&#123;</div><div class="line">    //count数组中保存了各灰度级在图像的像素数，在求直方图的过程中得出</div><div class="line">    sum += count[i];    //sum即灰度像素数的累加</div><div class="line">    p[i] = saturate_cast&lt;uchar&gt;(255.0 * sum / mn);</div><div class="line">&#125;</div><div class="line">LUT(srcImg, lut, eqImg);</div></pre></td></tr></table></figure>
+<p>均衡后的图像结果：<br><img src="/2017/03/23/opencv3/3.jpg" alt=""><br><img src="/2017/03/23/opencv3/4.jpg" alt=""></p>
+<h2 id="opencv接口-1"><a href="#opencv接口-1" class="headerlink" title="opencv接口"></a>opencv接口</h2><p>opencv提供了一个方便的用于直方图均衡的接口函数<code>equalizeHist()</code>。函数原型为：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">equalizeHist</span><span class="params">(InputArray src, OutputArray dst)</span></span>;</div></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -606,7 +613,7 @@ s_k = T(r_k) = (L-1)\sum_{j=0}^kp_r(r_j) =\frac {L-1}{MN}\sum_{j=0}^kn_j</script
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概念"><span class="nav-number">1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#直方图显示"><span class="nav-number">2.</span> <span class="nav-text">直方图显示</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#思路"><span class="nav-number">2.1.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码"><span class="nav-number">2.2.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#opencv给的接口"><span class="nav-number">2.3.</span> <span class="nav-text">opencv给的接口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#直方图均衡化-histogram-equalization"><span class="nav-number">3.</span> <span class="nav-text">直方图均衡化(histogram equalization)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">3.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码-1"><span class="nav-number">3.2.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#opencv接口"><span class="nav-number">3.3.</span> <span class="nav-text">opencv接口</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概念"><span class="nav-number">1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#直方图显示"><span class="nav-number">2.</span> <span class="nav-text">直方图显示</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#思路"><span class="nav-number">2.1.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码"><span class="nav-number">2.2.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#opencv接口"><span class="nav-number">2.3.</span> <span class="nav-text">opencv接口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#直方图均衡化-histogram-equalization"><span class="nav-number">3.</span> <span class="nav-text">直方图均衡化(histogram equalization)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">3.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码-1"><span class="nav-number">3.2.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#opencv接口-1"><span class="nav-number">3.3.</span> <span class="nav-text">opencv接口</span></a></li></ol></li></ol></div>
             
 
           </div>

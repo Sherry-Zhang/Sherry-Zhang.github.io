@@ -359,10 +359,9 @@ h(r_k)=n_k</script><p>其中：</p>
 <li>$r_k$：第k级的灰度值，k = 0, 1, 2, …, L-1</li>
 <li>$n_k$：图像中灰度为 $r_k$的像素个数。</li>
 </ul>
-<p>归一化直方图：<br><br>实践中经常用乘积MN表示图像像素的总数，通常M和N为图像的行和列的维数。归一化的直方图表示为：</p>
+<p><strong>归一化直方图：</strong>实践中经常用乘积MN表示图像像素的总数，通常M和N为图像的行和列的维数。归一化的直方图表示为：</p>
 <script type="math/tex; mode=display">
-p(r_k)=n_k/MN</script><p>$p_k$是灰度级$r_k$在图像中出现概率的一个估计。归一化直方图的所有分量之和应等于1。</p>
-<p>实际工程中，图像直方图在特征提取、图像匹配等方面都有很好的应用。<br></p>
+p(r_k)=n_k/MN</script><p>$p_k$是灰度级$r_k$在图像中出现概率的一个估计。归一化直方图的所有分量之和应等于1。<br><br>实际工程中，图像直方图在特征提取、图像匹配等方面都有很好的应用。<br></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/03/23/opencv3/#more" rel="contents">
@@ -507,7 +506,9 @@ p(r_k)=n_k/MN</script><p>$p_k$是灰度级$r_k$在图像中出现概率的一个
 
       
         
-          <p>图像增强的各种技术分类总结如下：<br><img src="/2017/03/17/opencv2/1.svg" alt=""><br>本篇先对灰度变换做个总结。灰度变换是用新灰度 $g(x,y)$ 代替对应的旧灰度 $f(x,y)$ ，而新灰度与旧灰度的映射关系，根据相关模型 $T$ 确定。<br>$$<br>g(x,y) = T(f(x,y))<br>$$<br>常见的变换函数有线性变换(图像翻转、恒等变换)、对数变换、幂律变换（伽马变换）等。<br></p>
+          <p>图像增强的各种技术分类总结如下：<br><img src="/2017/03/17/opencv2/1.svg" alt=""><br>本篇先对灰度变换做个总结。灰度变换是用新灰度 $g(x,y)$ 代替对应的旧灰度 $f(x,y)$ ，而新灰度与旧灰度的映射关系，根据相关模型 $T$ 确定。</p>
+<script type="math/tex; mode=display">
+g(x,y) = T(f(x,y))</script><p>常见的变换函数有线性变换(图像翻转、恒等变换)、对数变换、幂律变换（伽马变换）等。<br></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/03/17/opencv2/#more" rel="contents">
