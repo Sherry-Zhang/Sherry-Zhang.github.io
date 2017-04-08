@@ -100,8 +100,9 @@ g(x,y) = T(f(x,y))常见的变换函数有线性变换(图像翻转、恒等变�
 <meta property="og:image" content="http://www.zshu.me/2017/03/17/opencv2/bit.gif">
 <meta property="og:image" content="http://www.zshu.me/2017/03/17/opencv2/3.jpg">
 <meta property="og:image" content="http://www.zshu.me/2017/03/17/opencv2/log.gif">
+<meta property="og:image" content="http://www.zshu.me/2017/03/17/opencv2/gamma.jpg">
 <meta property="og:image" content="http://www.zshu.me/2017/03/17/opencv2/gamma.gif">
-<meta property="og:updated_time" content="2017-03-17T07:21:17.205Z">
+<meta property="og:updated_time" content="2017-04-08T06:41:57.541Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="图像处理和opencv学习（二）：灰度变换">
 <meta name="twitter:description" content="图像增强的各种技术分类总结如下：本篇先对灰度变换做个总结。灰度变换是用新灰度 $g(x,y)$ 代替对应的旧灰度 $f(x,y)$ ，而新灰度与旧灰度的映射关系，根据相关模型 $T$ 确定。
@@ -387,7 +388,7 @@ s=c×log_v(1+v×r)</script><p><img src="/2017/03/17/opencv2/3.jpg" alt=""><br>�
 <p><img src="/2017/03/17/opencv2/log.gif" alt=""></p>
 <h1 id="灰度图像的伽马变换"><a href="#灰度图像的伽马变换" class="headerlink" title="灰度图像的伽马变换"></a>灰度图像的伽马变换</h1><p>现实中伽马变换比对数变换应用的更广泛一点，伽马变换公式：</p>
 <script type="math/tex; mode=display">
-s=c×r^γ</script><p>伽马变换比对数变换灵活，它的作用是：</p>
+s=c×r^γ</script><p><img src="/2017/03/17/opencv2/gamma.jpg" alt=""><br>伽马变换比对数变换灵活，它的作用是：</p>
 <ul>
 <li>当γ在(0,1)范围内时，拉伸图像的低灰度部分，提升暗部细节。</li>
 <li>当γ大于1时，拉伸图像的高灰度部分，提升亮部细节。</li>
